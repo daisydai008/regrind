@@ -392,7 +392,8 @@ def rotate_points_along_axis(points, axis, angle):
         axis_vec = axis_arr / norm
 
     # Build rotation from axis-angle and apply (row-vector convention)
-    rotvec = axis_vec * float(angle)
+    # ``angle`` may arrive as a 0-d/1-elem ndarray (e.g. object joint from h5); coerce to scalar.
+    rotvec = axis_vec * float(np.asarray(angle, dtype=float).reshape(-1)[0])
     rot_mat = R.from_rotvec(rotvec).as_matrix()
     rotated = pts_2d @ rot_mat.T
     return rotated.reshape(original_shape)

@@ -183,6 +183,8 @@ def main():
         "--out", type=str, default=None, help="Output .h5 path (default under data/retargeted_traj/...)."
     )
     parser.add_argument("--no-visualize", dest="visualize", action="store_false", help="Disable Meshcat visualization.")
+    parser.add_argument("--solver", type=str, default="mosek", choices=("mosek", "clarabel"),
+                        help="QP solver backend (clarabel needs no license).")
     parser.set_defaults(visualize=True)
     args = parser.parse_args()
 
@@ -209,6 +211,9 @@ def main():
         hand_keypoint_weight = {k: (0.1 if k in ("1", "2", "3", "17") else 1.0) for k in mano_joints}
         penetration_tolerance = 0.002
 
+    from pydrake.all import ClarabelSolver, MosekSolver
+    solver = ClarabelSolver() if args.solver == "clarabel" else MosekSolver()
+
     retargeter = HandInteractionMeshOneStageRetargeter(
         robot_model_path=rc.ROBOT_URDF_FILE,
         robot_name=rc.ROBOT_NAME,
@@ -226,6 +231,7 @@ def main():
         visualize=args.visualize,
         debug=False,
         w_nominal_tracking_init=5.0,
+        solver=solver,
     )
 
     q_a_init = np.concatenate([mano_poses[0], np.zeros(robot_dof)])
