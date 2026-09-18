@@ -91,9 +91,24 @@ def main():
     p.add_argument("--height", type=int, default=720)
     p.add_argument("--eye", type=float, nargs=3, default=[0.55, 0.55, 1.35])
     p.add_argument("--target", type=float, nargs=3, default=[0.0, 0.0, 0.98])
+    p.add_argument("--auto-camera", action="store_true",
+                   help="Center the camera on the trajectory bounding box instead of using --eye/--target.")
+    p.add_argument("--camera-distance", type=float, default=0.85,
+                   help="Camera distance used with --auto-camera.")
     args = p.parse_args()
 
     rc, obj_cfg = _load_robot_object_cfg(args.robot, args.object)
+
+    if args.auto_camera:
+        with h5py.File(args.traj, "r") as f:
+            frame_points = np.concatenate(
+                [f["robot_keypoints"][:].reshape(-1, 3), f["object_pos"][:]], axis=0
+            )
+        args.target = ((frame_points.min(axis=0) + frame_points.max(axis=0)) / 2).tolist()
+        direction = np.array([0.55, 0.55, 0.37], dtype=float)
+        direction /= np.linalg.norm(direction)
+        args.eye = (np.asarray(args.target) + direction * args.camera_distance).tolist()
+        print(f"[INFO] auto camera target={args.target}, eye={args.eye}")
 
     # --- Build plant + scene graph with a registered VTK renderer ---
     plant, scene_graph, builder = create_plant(
