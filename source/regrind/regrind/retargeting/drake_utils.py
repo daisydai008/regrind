@@ -50,11 +50,23 @@ def _create_geometry_set_for_link(plant, link_names):
 def _setup_leaphand_collision_exclusions(plant, scene_graph):
     collision_filter_declaration = CollisionFilterDeclaration()
     filter_manager = scene_graph.collision_filter_manager()
+    _setup_leaphand_exclusions_impl(plant, filter_manager, collision_filter_declaration,
+                                    palm_link="palm_lower", thumb_base_link="thumb_temp_base")
+
+
+def _setup_leaphand_left_collision_exclusions(plant, scene_graph):
+    """Left LEAP: same finger links, palm_lower_left + thumb_left_temp_base."""
+    collision_filter_declaration = CollisionFilterDeclaration()
+    filter_manager = scene_graph.collision_filter_manager()
+    _setup_leaphand_exclusions_impl(plant, filter_manager, collision_filter_declaration,
+                                    palm_link="palm_lower_left",
+                                    thumb_base_link="thumb_left_temp_base")
+
+
+def _setup_leaphand_exclusions_impl(plant, filter_manager, declaration,
+                                    palm_link, thumb_base_link):
     # Palm
-    palm_set = _create_geometry_set_for_link(
-        plant,
-        ["palm_lower"],
-    )
+    palm_set = _create_geometry_set_for_link(plant, [palm_link])
     # Finger links except fingertips
     fingers_set = _create_geometry_set_for_link(
         plant,
@@ -62,12 +74,10 @@ def _setup_leaphand_collision_exclusions(plant, scene_graph):
             "mcp_joint", "pip", "dip",
             "mcp_joint_2", "pip_2", "dip_2",
             "mcp_joint_3", "pip_3", "dip_3",
-            "thumb_temp_base", "thumb_pip", "thumb_dip"
+            thumb_base_link, "thumb_pip", "thumb_dip"
         ],
     )
-    filter_manager.Apply(
-        collision_filter_declaration.ExcludeBetween(palm_set, fingers_set)
-    )
+    filter_manager.Apply(declaration.ExcludeBetween(palm_set, fingers_set))
 
 
 _WUJIHAND_COLLISION_EXCLUDE_BODY_PAIRS = (
@@ -104,9 +114,24 @@ _WUJIHAND_COLLISION_EXCLUDE_BODY_PAIRS = (
 
 def _setup_wujihand_collision_exclusions(plant, scene_graph):
     """Pairwise collision suppression matching the Wuji hand MuJoCo exclude list."""
+    _setup_wujihand_exclusions_impl(plant, scene_graph, _WUJIHAND_COLLISION_EXCLUDE_BODY_PAIRS)
+
+
+_WUJIHAND_COLLISION_EXCLUDE_BODY_PAIRS_LEFT = tuple(
+    (a.replace("right_", "left_", 1), b.replace("right_", "left_", 1))
+    for a, b in _WUJIHAND_COLLISION_EXCLUDE_BODY_PAIRS
+)
+
+
+def _setup_wujihand_left_collision_exclusions(plant, scene_graph):
+    """Left Wuji: same pair list with left_ link names."""
+    _setup_wujihand_exclusions_impl(plant, scene_graph, _WUJIHAND_COLLISION_EXCLUDE_BODY_PAIRS_LEFT)
+
+
+def _setup_wujihand_exclusions_impl(plant, scene_graph, body_pairs):
     filter_manager = scene_graph.collision_filter_manager()
     declaration = CollisionFilterDeclaration()
-    for body_a, body_b in _WUJIHAND_COLLISION_EXCLUDE_BODY_PAIRS:
+    for body_a, body_b in body_pairs:
         ids_a = _collision_geometry_ids_for_link(plant, body_a)
         ids_b = _collision_geometry_ids_for_link(plant, body_b)
         if not ids_a or not ids_b:

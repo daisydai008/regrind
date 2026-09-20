@@ -1,0 +1,825 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="wujihand-left">
+  <mujoco><compiler discardvisual="false" strippath="false" /></mujoco>
+  <link name="base" />
+  <joint name="base_joint" type="fixed">
+    <parent link="base" />
+    <child link="left_palm_link" />
+    <origin xyz="-0.000008 -0.019972 0.020016" rpy="-2.196446 1.569700 -0.625743" />
+  </joint>
+  <link name="left_palm_link">
+    <inertial><origin xyz="-0.002979471 -0.0004557176 0.03665409" rpy="0 0 0"/><mass value="0.16914"/><inertia ixx="0.00014" ixy="-2.5400000000e-06" ixz="6.9100000000e-06" iyy="9.4700000000e-05" iyz="6.6300000000e-06" izz="6.0000000000e-05"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_palm_link.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_palm_link/left_palm_link_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_palm_link/left_palm_link_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_palm_link/left_palm_link_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_palm_link/left_palm_link_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_palm_link/left_palm_link_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_palm_link/left_palm_link_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_palm_link/left_palm_link_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_palm_link/left_palm_link_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger1_link1">
+    <inertial><origin xyz="-0.002466361 0.001243356 0.007796453" rpy="0 0 0"/><mass value="0.0075"/><inertia ixx="3.2e-07" ixy="-2e-08" ixz="0" iyy="3e-07" iyz="4e-08" izz="2.3e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger1_link1.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link1/left_finger1_link1_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link1/left_finger1_link1_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link1/left_finger1_link1_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link1/left_finger1_link1_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link1/left_finger1_link1_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link1/left_finger1_link1_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link1/left_finger1_link1_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link1/left_finger1_link1_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger1_link2">
+    <inertial><origin xyz="0.001165924 1.466029e-05 0.01565596" rpy="0 0 0"/><mass value="0.0248"/><inertia ixx="2.76e-06" ixy="2e-08" ixz="1e-08" iyy="2.81e-06" iyz="2e-08" izz="6.8e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger1_link2.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link2/left_finger1_link2_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link2/left_finger1_link2_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link2/left_finger1_link2_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link2/left_finger1_link2_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link2/left_finger1_link2_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link2/left_finger1_link2_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link2/left_finger1_link2_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link2/left_finger1_link2_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger1_link3">
+    <inertial><origin xyz="-0.001123197 1.572991e-05 0.01305658" rpy="0 0 0"/><mass value="0.0165"/><inertia ixx="1.46e-06" ixy="0" ixz="-2e-08" iyy="1.42e-06" iyz="0" izz="4.5e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger1_link3.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link3/left_finger1_link3_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link3/left_finger1_link3_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link3/left_finger1_link3_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link3/left_finger1_link3_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link3/left_finger1_link3_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link3/left_finger1_link3_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link3/left_finger1_link3_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link3/left_finger1_link3_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger1_link4">
+    <inertial><origin xyz="-0.0011922 0.00021414 0.0082113" rpy="0 0 0"/><mass value="0.0165"/><inertia ixx="1.18e-06" ixy="0" ixz="1.2e-07" iyy="1.25e-06" iyz="0" izz="5.1e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger1_link4.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link4/left_finger1_link4_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link4/left_finger1_link4_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link4/left_finger1_link4_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link4/left_finger1_link4_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link4/left_finger1_link4_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link4/left_finger1_link4_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link4/left_finger1_link4_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_link4/left_finger1_link4_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger2_link1">
+    <inertial><origin xyz="-0.0013291 -5.6587e-09 0.00031994" rpy="0 0 0"/><mass value="0.0032"/><inertia ixx="8e-08" ixy="0" ixz="-3e-08" iyy="7e-08" iyz="0" izz="8e-08"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger2_link1.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link1/left_finger2_link1_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link1/left_finger2_link1_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link1/left_finger2_link1_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link1/left_finger2_link1_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link1/left_finger2_link1_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link1/left_finger2_link1_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link1/left_finger2_link1_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link1/left_finger2_link1_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger2_link2">
+    <inertial><origin xyz="4.378686e-07 0.006157522 0.02091104" rpy="0 0 0"/><mass value="0.033"/><inertia ixx="6.31e-06" ixy="0" ixz="-1.6e-07" iyy="6.34e-06" iyz="0" izz="8.9e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger2_link2.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link2/left_finger2_link2_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link2/left_finger2_link2_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link2/left_finger2_link2_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link2/left_finger2_link2_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link2/left_finger2_link2_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link2/left_finger2_link2_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link2/left_finger2_link2_collision_6.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger2_link3">
+    <inertial><origin xyz="-0.001121873 3.276186e-05 0.01571884" rpy="0 0 0"/><mass value="0.0165"/><inertia ixx="1.47e-06" ixy="0" ixz="3e-08" iyy="1.44e-06" iyz="0" izz="4.5e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger2_link3.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link3/left_finger2_link3_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link3/left_finger2_link3_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link3/left_finger2_link3_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link3/left_finger2_link3_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link3/left_finger2_link3_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link3/left_finger2_link3_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link3/left_finger2_link3_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link3/left_finger2_link3_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger2_link4">
+    <inertial><origin xyz="-0.0008943786 0.0002170653 0.005351759" rpy="0 0 0"/><mass value="0.014"/><inertia ixx="9.5e-07" ixy="0" ixz="1.4e-07" iyy="8.6e-07" iyz="-1e-08" izz="3e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger2_link4.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link4/left_finger2_link4_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link4/left_finger2_link4_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link4/left_finger2_link4_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link4/left_finger2_link4_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link4/left_finger2_link4_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link4/left_finger2_link4_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link4/left_finger2_link4_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_link4/left_finger2_link4_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger3_link1">
+    <inertial><origin xyz="-0.0013291 -1.4994e-08 0.0003199" rpy="0 0 0"/><mass value="0.0032"/><inertia ixx="8e-08" ixy="0" ixz="-3e-08" iyy="7e-08" iyz="0" izz="8e-08"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger3_link1.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link1/left_finger3_link1_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link1/left_finger3_link1_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link1/left_finger3_link1_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link1/left_finger3_link1_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link1/left_finger3_link1_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link1/left_finger3_link1_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link1/left_finger3_link1_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link1/left_finger3_link1_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger3_link2">
+    <inertial><origin xyz="4.38062e-07 0.006157535 0.02091104" rpy="0 0 0"/><mass value="0.033"/><inertia ixx="6.31e-06" ixy="0" ixz="-1.6e-07" iyy="6.34e-06" iyz="0" izz="8.9e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger3_link2.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link2/left_finger3_link2_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link2/left_finger3_link2_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link2/left_finger3_link2_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link2/left_finger3_link2_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link2/left_finger3_link2_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link2/left_finger3_link2_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link2/left_finger3_link2_collision_6.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger3_link3">
+    <inertial><origin xyz="-0.001121872 3.278072e-05 0.01571884" rpy="0 0 0"/><mass value="0.0165"/><inertia ixx="1.47e-06" ixy="0" ixz="3e-08" iyy="1.44e-06" iyz="0" izz="4.5e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger3_link3.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link3/left_finger3_link3_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link3/left_finger3_link3_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link3/left_finger3_link3_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link3/left_finger3_link3_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link3/left_finger3_link3_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link3/left_finger3_link3_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link3/left_finger3_link3_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link3/left_finger3_link3_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger3_link4">
+    <inertial><origin xyz="-0.0008943612 0.0002170501 0.005351766" rpy="0 0 0"/><mass value="0.014"/><inertia ixx="9.5e-07" ixy="0" ixz="1.4e-07" iyy="8.6e-07" iyz="-1e-08" izz="3e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger3_link4.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link4/left_finger3_link4_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link4/left_finger3_link4_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link4/left_finger3_link4_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link4/left_finger3_link4_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link4/left_finger3_link4_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link4/left_finger3_link4_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link4/left_finger3_link4_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_link4/left_finger3_link4_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger4_link1">
+    <inertial><origin xyz="-0.0013291 -9.6993e-09 0.00031986" rpy="0 0 0"/><mass value="0.0032"/><inertia ixx="8e-08" ixy="0" ixz="-3e-08" iyy="7e-08" iyz="0" izz="8e-08"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger4_link1.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link1/left_finger4_link1_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link1/left_finger4_link1_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link1/left_finger4_link1_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link1/left_finger4_link1_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link1/left_finger4_link1_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link1/left_finger4_link1_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link1/left_finger4_link1_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link1/left_finger4_link1_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger4_link2">
+    <inertial><origin xyz="4.368958e-07 0.006157536 0.02091104" rpy="0 0 0"/><mass value="0.033"/><inertia ixx="6.31e-06" ixy="0" ixz="-1.6e-07" iyy="6.34e-06" iyz="0" izz="8.9e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger4_link2.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link2/left_finger4_link2_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link2/left_finger4_link2_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link2/left_finger4_link2_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link2/left_finger4_link2_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link2/left_finger4_link2_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link2/left_finger4_link2_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link2/left_finger4_link2_collision_6.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger4_link3">
+    <inertial><origin xyz="-0.001121877 3.279418e-05 0.01571884" rpy="0 0 0"/><mass value="0.0165"/><inertia ixx="1.47e-06" ixy="0" ixz="3e-08" iyy="1.44e-06" iyz="0" izz="4.5e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger4_link3.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link3/left_finger4_link3_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link3/left_finger4_link3_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link3/left_finger4_link3_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link3/left_finger4_link3_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link3/left_finger4_link3_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link3/left_finger4_link3_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link3/left_finger4_link3_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link3/left_finger4_link3_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger4_link4">
+    <inertial><origin xyz="-0.0008943647 0.0002170417 0.005351769" rpy="0 0 0"/><mass value="0.014"/><inertia ixx="9.5e-07" ixy="0" ixz="1.4e-07" iyy="8.6e-07" iyz="-1e-08" izz="3e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger4_link4.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link4/left_finger4_link4_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link4/left_finger4_link4_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link4/left_finger4_link4_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link4/left_finger4_link4_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link4/left_finger4_link4_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link4/left_finger4_link4_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link4/left_finger4_link4_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_link4/left_finger4_link4_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger5_link1">
+    <inertial><origin xyz="-0.001329093 -2.352751e-08 0.0003198447" rpy="0 0 0"/><mass value="0.0032"/><inertia ixx="8e-08" ixy="0" ixz="-3e-08" iyy="7e-08" iyz="0" izz="8e-08"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger5_link1.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link1/left_finger5_link1_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link1/left_finger5_link1_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link1/left_finger5_link1_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link1/left_finger5_link1_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link1/left_finger5_link1_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link1/left_finger5_link1_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link1/left_finger5_link1_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link1/left_finger5_link1_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger5_link2">
+    <inertial><origin xyz="4.367533e-07 0.006157528 0.02091104" rpy="0 0 0"/><mass value="0.033"/><inertia ixx="6.31e-06" ixy="0" ixz="-1.6e-07" iyy="6.34e-06" iyz="0" izz="8.9e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger5_link2.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link2/left_finger5_link2_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link2/left_finger5_link2_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link2/left_finger5_link2_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link2/left_finger5_link2_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link2/left_finger5_link2_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link2/left_finger5_link2_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link2/left_finger5_link2_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link2/left_finger5_link2_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger5_link3">
+    <inertial><origin xyz="-0.001121876 3.280675e-05 0.01571885" rpy="0 0 0"/><mass value="0.0165"/><inertia ixx="1.47e-06" ixy="0" ixz="3e-08" iyy="1.44e-06" iyz="0" izz="4.5e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger5_link3.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link3/left_finger5_link3_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link3/left_finger5_link3_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link3/left_finger5_link3_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link3/left_finger5_link3_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link3/left_finger5_link3_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link3/left_finger5_link3_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link3/left_finger5_link3_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link3/left_finger5_link3_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger5_link4">
+    <inertial><origin xyz="-0.0008943768 0.0002170416 0.005351765" rpy="0 0 0"/><mass value="0.014"/><inertia ixx="9.5e-07" ixy="0" ixz="1.4e-07" iyy="8.6e-07" iyz="-1e-08" izz="3e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger5_link4.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link4/left_finger5_link4_collision_0.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link4/left_finger5_link4_collision_1.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link4/left_finger5_link4_collision_2.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link4/left_finger5_link4_collision_3.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link4/left_finger5_link4_collision_4.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link4/left_finger5_link4_collision_5.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link4/left_finger5_link4_collision_6.obj"/></geometry></collision>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_link4/left_finger5_link4_collision_7.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger1_tip_link">
+    <inertial><origin xyz="-0.00017019 1.7524e-05 -0.0071779" rpy="0 0 0"/><mass value="0.0041"/><inertia ixx="5.5e-07" ixy="0" ixz="2e-08" iyy="5.2e-07" iyz="0" izz="2.7e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger1_tip_link.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger1_tip_link/left_finger1_tip_link_collision_0.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger2_tip_link">
+    <inertial><origin xyz="-0.0001897323 3.534942e-06 -0.009137204" rpy="0 0 0"/><mass value="0.00318"/><inertia ixx="2e-07" ixy="0" ixz="0" iyy="2.1e-07" iyz="0" izz="1.3e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger2_tip_link.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger2_tip_link/left_finger2_tip_link_collision_0.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger3_tip_link">
+    <inertial><origin xyz="-0.0001897293 -6.958438e-07 -0.009137151" rpy="0 0 0"/><mass value="0.00318"/><inertia ixx="2e-07" ixy="0" ixz="0" iyy="2.1e-07" iyz="0" izz="1.3e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger3_tip_link.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger3_tip_link/left_finger3_tip_link_collision_0.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger4_tip_link">
+    <inertial><origin xyz="-0.00018961 -6.059208e-06 -0.009137119" rpy="0 0 0"/><mass value="0.00318"/><inertia ixx="2e-07" ixy="0" ixz="0" iyy="2.1e-07" iyz="0" izz="1.3e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger4_tip_link.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger4_tip_link/left_finger4_tip_link_collision_0.obj"/></geometry></collision>
+  </link>
+  <link name="left_finger5_tip_link">
+    <inertial><origin xyz="-0.000189703 5.010497e-07 -0.009137113" rpy="0 0 0"/><mass value="0.00318"/><inertia ixx="2e-07" ixy="0" ixz="0" iyy="2.1e-07" iyz="0" izz="1.3e-07"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full/left/left_finger5_tip_link.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="./assets/wujihand_full_simplified_v1/left/left_finger5_tip_link/left_finger5_tip_link_collision_0.obj"/></geometry></collision>
+  </link>
+<joint
+    name="left_finger1_joint1"
+    type="revolute">
+    <origin
+      xyz="0.0084399 -0.020587 0.028893"
+      rpy="1.328 -0.37161 0.7307" />
+    <parent
+      link="left_palm_link" />
+    <child
+      link="left_finger1_link1" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="0.0475"
+      upper="1.6033"
+      effort="0.4452"
+      velocity="8.587" />
+  </joint>
+<joint
+    name="left_finger1_joint2"
+    type="revolute">
+    <origin
+      xyz="-0.0047549 0.0058191 0.014132"
+      rpy="0.57428 -0.23677 -1.8034" />
+    <parent
+      link="left_finger1_link1" />
+    <child
+      link="left_finger1_link2" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-0.1387"
+      upper="0.9324"
+      effort="0.4259"
+      velocity="11.1" />
+  </joint>
+<joint
+    name="left_finger1_joint3"
+    type="revolute">
+    <origin
+      xyz="0.00026671 0.0009915 0.034666"
+      rpy="-0.049049 0.017311 1.9085" />
+    <parent
+      link="left_finger1_link2" />
+    <child
+      link="left_finger1_link3" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.4642"
+      upper="1.5623"
+      effort="0.1888"
+      velocity="12.863" />
+  </joint>
+<joint
+    name="left_finger1_joint4"
+    type="revolute">
+    <origin
+      xyz="0 -0.0002 0.0295"
+      rpy="0 0 0" />
+    <parent
+      link="left_finger1_link3" />
+    <child
+      link="left_finger1_link4" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.4699"
+      upper="1.5568"
+      effort="0.1468"
+      velocity="13.578" />
+  </joint>
+<joint
+    name="left_finger1_tip_fixed"
+    type="fixed">
+    <origin
+      xyz="-0.00105 0.0002 0.0313"
+      rpy="0 0 0" />
+    <parent
+      link="left_finger1_link4" />
+    <child
+      link="left_finger1_tip_link" />
+  </joint>
+<joint
+    name="left_finger2_joint1"
+    type="revolute">
+    <origin
+      xyz="-0.0058701 -0.029434 0.091917"
+      rpy="0.11071 -0.071139 0.21822" />
+    <parent
+      link="left_palm_link" />
+    <child
+      link="left_finger2_link1" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.1585"
+      upper="1.5604"
+      effort="0.6188"
+      velocity="8.203" />
+  </joint>
+<joint
+    name="left_finger2_joint2"
+    type="revolute">
+    <origin
+      xyz="0.0022 0 0.004000006"
+      rpy="0 0 1.570796" />
+    <parent
+      link="left_finger2_link1" />
+    <child
+      link="left_finger2_link2" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.3700"
+      upper="0.3700"
+      effort="0.1822"
+      velocity="8.115" />
+  </joint>
+<joint
+    name="left_finger2_joint3"
+    type="revolute">
+    <origin
+      xyz="0 0.004749999 0.04361769"
+      rpy="0 0 -1.570528" />
+    <parent
+      link="left_finger2_link2" />
+    <child
+      link="left_finger2_link3" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.4777"
+      upper="1.5485"
+      effort="0.2251"
+      velocity="12.863" />
+  </joint>
+<joint
+    name="left_finger2_joint4"
+    type="revolute">
+    <origin
+      xyz="0 -0.0002 0.0295"
+      rpy="0 0 0" />
+    <parent
+      link="left_finger2_link3" />
+    <child
+      link="left_finger2_link4" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.4683"
+      upper="1.5753"
+      effort="0.2170"
+      velocity="13.578" />
+  </joint>
+<joint
+    name="left_finger2_tip_fixed"
+    type="fixed">
+    <origin
+      xyz="-0.0010521 0.0002108692 0.0267"
+      rpy="0 0 0" />
+    <parent
+      link="left_finger2_link4" />
+    <child
+      link="left_finger2_tip_link" />
+  </joint>
+<joint
+    name="left_finger3_joint1"
+    type="revolute">
+    <origin
+      xyz="-0.01046 -0.0074615 0.089544"
+      rpy="5.0894e-05 -0.087266 -0.00058387" />
+    <parent
+      link="left_palm_link" />
+    <child
+      link="left_finger3_link1" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.1644"
+      upper="1.5516"
+      effort="0.6494"
+      velocity="8.203" />
+  </joint>
+<joint
+    name="left_finger3_joint2"
+    type="revolute">
+    <origin
+      xyz="0.0022 0 0.004000006"
+      rpy="0 0 1.570796" />
+    <parent
+      link="left_finger3_link1" />
+    <child
+      link="left_finger3_link2" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.3700"
+      upper="0.3700"
+      effort="0.1827"
+      velocity="8.115" />
+  </joint>
+<joint
+    name="left_finger3_joint3"
+    type="revolute">
+    <origin
+      xyz="0 0.004749999 0.04361769"
+      rpy="0 0 -1.570528" />
+    <parent
+      link="left_finger3_link2" />
+    <child
+      link="left_finger3_link3" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.4739"
+      upper="1.5512"
+      effort="0.2078"
+      velocity="12.863" />
+  </joint>
+<joint
+    name="left_finger3_joint4"
+    type="revolute">
+    <origin
+      xyz="0 -0.0002 0.0295"
+      rpy="0 0 0" />
+    <parent
+      link="left_finger3_link3" />
+    <child
+      link="left_finger3_link4" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.4684"
+      upper="1.5745"
+      effort="0.2018"
+      velocity="13.578" />
+  </joint>
+<joint
+    name="left_finger3_tip_fixed"
+    type="fixed">
+    <origin
+      xyz="-0.0010504 0.0002026723 0.0267"
+      rpy="0 0 0" />
+    <parent
+      link="left_finger3_link4" />
+    <child
+      link="left_finger3_tip_link" />
+  </joint>
+<joint
+    name="left_finger4_joint1"
+    type="revolute">
+    <origin
+      xyz="-0.0076649 0.013712 0.084429"
+      rpy="-0.090375 -0.083436 -0.047127" />
+    <parent
+      link="left_palm_link" />
+    <child
+      link="left_finger4_link1" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.1554"
+      upper="1.5585"
+      effort="0.6389"
+      velocity="8.203" />
+  </joint>
+<joint
+    name="left_finger4_joint2"
+    type="revolute">
+    <origin
+      xyz="0.0022 0 0.004000005"
+      rpy="0 0 1.570796" />
+    <parent
+      link="left_finger4_link1" />
+    <child
+      link="left_finger4_link2" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.3700"
+      upper="0.3700"
+      effort="0.1832"
+      velocity="8.115" />
+  </joint>
+<joint
+    name="left_finger4_joint3"
+    type="revolute">
+    <origin
+      xyz="0 0.004749999 0.04361769"
+      rpy="0 0 -1.570528" />
+    <parent
+      link="left_finger4_link2" />
+    <child
+      link="left_finger4_link3" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.4765"
+      upper="1.5487"
+      effort="0.2249"
+      velocity="12.863" />
+  </joint>
+<joint
+    name="left_finger4_joint4"
+    type="revolute">
+    <origin
+      xyz="0 -0.0002 0.0295"
+      rpy="0 0 0" />
+    <parent
+      link="left_finger4_link3" />
+    <child
+      link="left_finger4_link4" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.4777"
+      upper="1.5634"
+      effort="0.2044"
+      velocity="13.578" />
+  </joint>
+<joint
+    name="left_finger4_tip_fixed"
+    type="fixed">
+    <origin
+      xyz="-0.001049983 0.0002025572 0.0267"
+      rpy="0 0 0" />
+    <parent
+      link="left_finger4_link4" />
+    <child
+      link="left_finger4_tip_link" />
+  </joint>
+<joint
+    name="left_finger5_joint1"
+    type="revolute">
+    <origin
+      xyz="-0.002268651 0.03400111 0.07428134"
+      rpy="-0.1924837 -0.09251723 -0.1576728" />
+    <parent
+      link="left_palm_link" />
+    <child
+      link="left_finger5_link1" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.1626"
+      upper="1.5585"
+      effort="0.6441"
+      velocity="8.203" />
+  </joint>
+<joint
+    name="left_finger5_joint2"
+    type="revolute">
+    <origin
+      xyz="0.002200001 0 0.004000005"
+      rpy="0 0 1.570796" />
+    <parent
+      link="left_finger5_link1" />
+    <child
+      link="left_finger5_link2" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.3700"
+      upper="0.3700"
+      effort="0.1798"
+      velocity="8.115" />
+  </joint>
+<joint
+    name="left_finger5_joint3"
+    type="revolute">
+    <origin
+      xyz="0 0.00475 0.04361769"
+      rpy="0 0 -1.570528" />
+    <parent
+      link="left_finger5_link2" />
+    <child
+      link="left_finger5_link3" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.4768"
+      upper="1.5490"
+      effort="0.2384"
+      velocity="12.863" />
+  </joint>
+<joint
+    name="left_finger5_joint4"
+    type="revolute">
+    <origin
+      xyz="0 -0.0002 0.0295"
+      rpy="0 0 0" />
+    <parent
+      link="left_finger5_link3" />
+    <child
+      link="left_finger5_link4" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.4683"
+      upper="1.5735"
+      effort="0.1866"
+      velocity="13.578" />
+  </joint>
+<joint
+    name="left_finger5_tip_fixed"
+    type="fixed">
+    <origin
+      xyz="-0.001050407 0.0002010472 0.0267"
+      rpy="0 0 0" />
+    <parent
+      link="left_finger5_link4" />
+    <child
+      link="left_finger5_tip_link" />
+  </joint>
+  <link name="mano_0"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_0" type="fixed">
+    <parent link="base"/>
+    <child link="mano_0"/>
+    <origin xyz="-0.000034 0.000031 0.020009" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_1"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_1" type="fixed">
+    <parent link="left_finger2_link1"/>
+    <child link="mano_1"/>
+    <origin xyz="-0.005572 0.099079 -0.087173" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_2"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_2" type="fixed">
+    <parent link="left_finger2_link2"/>
+    <child link="mano_2"/>
+    <origin xyz="0.141938 0.003802 -0.098237" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_3"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_3" type="fixed">
+    <parent link="left_finger2_link3"/>
+    <child link="mano_3"/>
+    <origin xyz="0.002282 0.170311 -0.151130" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_4"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_4" type="fixed">
+    <parent link="left_finger3_link1"/>
+    <child link="mano_4"/>
+    <origin xyz="-0.003868 0.081203 -0.078176" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_5"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_5" type="fixed">
+    <parent link="left_finger3_link2"/>
+    <child link="mano_5"/>
+    <origin xyz="0.124653 0.006420 -0.085992" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_6"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_6" type="fixed">
+    <parent link="left_finger3_link3"/>
+    <child link="mano_6"/>
+    <origin xyz="-0.002272 0.153622 -0.136904" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_7"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_7" type="fixed">
+    <parent link="left_finger5_link1"/>
+    <child link="mano_7"/>
+    <origin xyz="0.027263 0.040311 -0.050616" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_8"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_8" type="fixed">
+    <parent link="left_finger5_link2"/>
+    <child link="mano_8"/>
+    <origin xyz="0.083537 -0.026879 -0.049073" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_9"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_9" type="fixed">
+    <parent link="left_finger5_link3"/>
+    <child link="mano_9"/>
+    <origin xyz="0.033256 0.113346 -0.093585" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_10"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_10" type="fixed">
+    <parent link="left_finger4_link1"/>
+    <child link="mano_10"/>
+    <origin xyz="0.013125 0.062086 -0.066257" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_11"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_11" type="fixed">
+    <parent link="left_finger4_link2"/>
+    <child link="mano_11"/>
+    <origin xyz="0.105667 -0.012695 -0.069964" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_12"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_12" type="fixed">
+    <parent link="left_finger4_link3"/>
+    <child link="mano_12"/>
+    <origin xyz="0.018531 0.135178 -0.118087" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_13"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_13" type="fixed">
+    <parent link="left_finger1_link1"/>
+    <child link="mano_13"/>
+    <origin xyz="-0.006845 0.018099 -0.053120" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_14"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_14" type="fixed">
+    <parent link="left_finger1_link2"/>
+    <child link="mano_14"/>
+    <origin xyz="-0.041563 -0.067940 -0.059992" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_15"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_15" type="fixed">
+    <parent link="left_finger1_link3"/>
+    <child link="mano_15"/>
+    <origin xyz="-0.066908 0.089000 -0.101471" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_16"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_16" type="fixed">
+    <parent link="left_finger1_link4"/>
+    <child link="mano_16"/>
+    <origin xyz="-0.085992 0.110473 -0.140101" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_17"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_17" type="fixed">
+    <parent link="left_finger2_link4"/>
+    <child link="mano_17"/>
+    <origin xyz="0.004199 0.191145 -0.184031" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_18"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_18" type="fixed">
+    <parent link="left_finger3_link4"/>
+    <child link="mano_18"/>
+    <origin xyz="-0.002435 0.174741 -0.168241" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_19"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_19" type="fixed">
+    <parent link="left_finger4_link4"/>
+    <child link="mano_19"/>
+    <origin xyz="0.019389 0.156360 -0.147433" rpy="0 0 0"/>
+  </joint>
+  <link name="mano_20"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
+  <joint name="mano_20" type="fixed">
+    <parent link="left_finger5_link4"/>
+    <child link="mano_20"/>
+    <origin xyz="0.034198 0.135841 -0.120208" rpy="0 0 0"/>
+  </joint>
+</robot>

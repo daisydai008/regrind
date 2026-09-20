@@ -30,13 +30,24 @@ def _robot_resources(robot_name: str):
         from regrind.retargeting.drake_utils import _setup_leaphand_collision_exclusions
 
         return MANO_JOINTS, ROBOT_DOF, _setup_leaphand_collision_exclusions
+    if robot_name == "leaphand_left":
+        from regrind.retargeting.leaphand_left_constants import MANO_JOINTS, ROBOT_DOF
+        from regrind.retargeting.drake_utils import _setup_leaphand_left_collision_exclusions
+
+        return MANO_JOINTS, ROBOT_DOF, _setup_leaphand_left_collision_exclusions
     if robot_name == "wujihand":
         from regrind.retargeting.wujihand_constants import MANO_JOINTS, ROBOT_DOF
         from regrind.retargeting.drake_utils import _setup_wujihand_collision_exclusions
 
         return MANO_JOINTS, ROBOT_DOF, _setup_wujihand_collision_exclusions
+    if robot_name == "wujihand_left":
+        from regrind.retargeting.wujihand_left_constants import MANO_JOINTS, ROBOT_DOF
+        from regrind.retargeting.drake_utils import _setup_wujihand_left_collision_exclusions
+
+        return MANO_JOINTS, ROBOT_DOF, _setup_wujihand_left_collision_exclusions
     raise ValueError(
-        f"Unknown robot_name {robot_name!r}; expected 'leaphand' or 'wujihand'."
+        f"Unknown robot_name {robot_name!r}; expected one of "
+        "'leaphand', 'leaphand_left', 'wujihand', 'wujihand_left'."
     )
 
 

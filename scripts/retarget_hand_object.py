@@ -33,11 +33,22 @@ def _load_robot_constants_module(robot_name: str):
         from regrind.retargeting import leaphand_constants as rc
 
         return rc, rc.MANO_TO_LEAP_MAPPING
+    if robot_name == "leaphand_left":
+        from regrind.retargeting import leaphand_left_constants as rc
+
+        return rc, rc.MANO_TO_LEAP_MAPPING
     if robot_name == "wujihand":
         from regrind.retargeting import wujihand_constants as rc
 
         return rc, rc.MANO_TO_WUJI_MAPPING
-    raise ValueError(f"Unknown robot {robot_name!r}; expected 'leaphand' or 'wujihand'.")
+    if robot_name == "wujihand_left":
+        from regrind.retargeting import wujihand_left_constants as rc
+
+        return rc, rc.MANO_TO_WUJI_MAPPING
+    raise ValueError(
+        f"Unknown robot {robot_name!r}; expected 'leaphand', 'leaphand_left', "
+        "'wujihand' or 'wujihand_left'."
+    )
 
 
 # ---------------------------------------------------------------------------
