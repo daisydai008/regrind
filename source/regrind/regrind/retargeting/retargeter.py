@@ -691,8 +691,10 @@ class HandInteractionMeshOneStageRetargeter:
 
         if not result.is_success():
             tol = 1e-8
+            max_violation = 0.0
 
             def dump(binding, label):
+                nonlocal max_violation
                 x_val = result.GetSolution(binding.variables())
                 ok = binding.evaluator().CheckSatisfied(x_val, tol)
                 if not ok:
@@ -703,6 +705,7 @@ class HandInteractionMeshOneStageRetargeter:
                         lb = binding.evaluator().lower_bound()
                         ub = binding.evaluator().upper_bound()
                         viol = np.maximum(lb - y, 0) + np.maximum(y - ub, 0)
+                        max_violation = max(max_violation, float(np.max(viol)))
                         print(f"  max_violation = {float(np.max(viol))}")
                     except Exception:
                         # Non box/bound-type constraints (e.g., cones) won’t have lb/ub.
@@ -724,8 +727,19 @@ class HandInteractionMeshOneStageRetargeter:
             dump(step_size_constraint, "step_size")
 
         if not result.is_success():
-            print("Failed to solve the program.")
-            breakpoint()
+            # Clarabel sometimes reports failure on near-infeasible QPs at tight
+            # contacts where Mosek succeeds. If the returned iterate is only
+            # marginally violating the linearized constraints, accept it and let
+            # the post-step penetration check / next iteration handle it.
+            fallback_tol = getattr(self, "solve_failure_tolerance", 1e-2)
+            if max_violation <= fallback_tol:
+                print(
+                    f"  [warn] solver reported failure but max violation "
+                    f"{max_violation:.2e} <= {fallback_tol:.0e}; accepting iterate."
+                )
+            else:
+                print("Failed to solve the program.")
+                breakpoint()
 
         dqa_star = result.GetSolution(dqa)
         cost = result.get_optimal_cost()
