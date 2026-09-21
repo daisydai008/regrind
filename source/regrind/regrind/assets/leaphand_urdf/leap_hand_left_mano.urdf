@@ -4,7 +4,7 @@
   <joint name="base_joint" type="fixed">
     <parent link="base"/>
     <child link="palm_lower_left"/>
-    <origin xyz="-0.130455 -0.105818 0.054945" rpy="2.691491 0.071008 -2.105230" <!-- wrist-calibrated 2026-09-20 -->
+    <origin xyz="-0.130455 -0.105818 0.054945" rpy="2.691491 0.071008 -2.105230" /> <!-- wrist-calibrated 2026-09-20 -->
   </joint>
 
   <link name="palm_lower_left">
