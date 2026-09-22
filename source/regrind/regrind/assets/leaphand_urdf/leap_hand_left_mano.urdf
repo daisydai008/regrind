@@ -4,7 +4,7 @@
   <joint name="base_joint" type="fixed">
     <parent link="base"/>
     <child link="palm_lower_left"/>
-    <origin xyz="0.111523 0.139473 -0.035494" rpy="-1.499563 0.054832 0.858888" /> <!-- wrist-calibrated v3 -->
+    <origin xyz="0.117340 0.105773 -0.049289" rpy="-1.338486 0.099190 0.759435" /> <!-- wrist-calibrated v4: anchor-fixed model, T_r^-1 T_off G -->
   </joint>
 
   <link name="palm_lower_left">
