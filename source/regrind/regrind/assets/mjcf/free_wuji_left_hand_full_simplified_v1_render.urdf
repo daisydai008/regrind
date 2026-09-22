@@ -5,7 +5,7 @@
   <joint name="base_joint" type="fixed">
     <parent link="base" />
     <child link="left_palm_link" />
-    <origin xyz="0.004128 0.014200 0.044564" rpy="-2.699035 1.409043 1.624471" /> <!-- wrist-calibrated v3 -->
+    <origin xyz="-0.023954 0.002647 -0.004772" rpy="-1.473021 0.120299 -1.695369" /> <!-- wrist-calibrated v4: anchor-fixed model, T_r^-1 T_off G -->
   </joint>
   <link name="left_palm_link">
     <inertial><origin xyz="-0.002979471 -0.0004557176 0.03665409" rpy="0 0 0"/><mass value="0.16914"/><inertia ixx="0.00014" ixy="-2.5400000000e-06" ixz="6.9100000000e-06" iyy="9.4700000000e-05" iyz="6.6300000000e-06" izz="6.0000000000e-05"/></inertial>
@@ -700,126 +700,126 @@
   <joint name="mano_0" type="fixed">
     <parent link="base"/>
     <child link="mano_0"/>
-    <origin xyz="-0.000034 0.000031 0.020009" rpy="0 0 0"/>
+    <origin xyz="-0.000003 -0.000006 -0.000028" rpy="0 0 0"/>
   </joint>
   <link name="mano_1"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_1" type="fixed">
     <parent link="left_finger2_link1"/>
     <child link="mano_1"/>
-    <origin xyz="-0.005572 0.099079 -0.087173" rpy="0 0 0"/>
+    <origin xyz="0.002208 -0.000047 0.003982" rpy="0 0 0"/>
   </joint>
   <link name="mano_2"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_2" type="fixed">
     <parent link="left_finger2_link2"/>
     <child link="mano_2"/>
-    <origin xyz="0.141938 0.003802 -0.098237" rpy="0 0 0"/>
+    <origin xyz="-0.000087 -0.000006 0.043600" rpy="0 0 0"/>
   </joint>
   <link name="mano_3"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_3" type="fixed">
     <parent link="left_finger2_link3"/>
     <child link="mano_3"/>
-    <origin xyz="0.002282 0.170311 -0.151130" rpy="0 0 0"/>
+    <origin xyz="0.000005 -0.000117 0.029482" rpy="0 0 0"/>
   </joint>
   <link name="mano_4"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_4" type="fixed">
     <parent link="left_finger3_link1"/>
     <child link="mano_4"/>
-    <origin xyz="-0.003868 0.081203 -0.078176" rpy="0 0 0"/>
+    <origin xyz="0.002205 -0.000041 0.003997" rpy="0 0 0"/>
   </joint>
   <link name="mano_5"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_5" type="fixed">
     <parent link="left_finger3_link2"/>
     <child link="mano_5"/>
-    <origin xyz="0.124653 0.006420 -0.085992" rpy="0 0 0"/>
+    <origin xyz="-0.000082 -0.000009 0.043615" rpy="0 0 0"/>
   </joint>
   <link name="mano_6"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_6" type="fixed">
     <parent link="left_finger3_link3"/>
     <child link="mano_6"/>
-    <origin xyz="-0.002272 0.153622 -0.136904" rpy="0 0 0"/>
+    <origin xyz="0.000011 -0.000112 0.029497" rpy="0 0 0"/>
   </joint>
   <link name="mano_7"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_7" type="fixed">
     <parent link="left_finger5_link1"/>
     <child link="mano_7"/>
-    <origin xyz="0.027263 0.040311 -0.050616" rpy="0 0 0"/>
+    <origin xyz="0.002184 -0.000033 0.004029" rpy="0 0 0"/>
   </joint>
   <link name="mano_8"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_8" type="fixed">
     <parent link="left_finger5_link2"/>
     <child link="mano_8"/>
-    <origin xyz="0.083537 -0.026879 -0.049073" rpy="0 0 0"/>
+    <origin xyz="-0.000073 0.000044 0.043647" rpy="0 0 0"/>
   </joint>
   <link name="mano_9"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_9" type="fixed">
     <parent link="left_finger5_link3"/>
     <child link="mano_9"/>
-    <origin xyz="0.033256 0.113346 -0.093585" rpy="0 0 0"/>
+    <origin xyz="-0.000008 -0.000103 0.029530" rpy="0 0 0"/>
   </joint>
   <link name="mano_10"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_10" type="fixed">
     <parent link="left_finger4_link1"/>
     <child link="mano_10"/>
-    <origin xyz="0.013125 0.062086 -0.066257" rpy="0 0 0"/>
+    <origin xyz="0.002194 -0.000038 0.004013" rpy="0 0 0"/>
   </joint>
   <link name="mano_11"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_11" type="fixed">
     <parent link="left_finger4_link2"/>
     <child link="mano_11"/>
-    <origin xyz="0.105667 -0.012695 -0.069964" rpy="0 0 0"/>
+    <origin xyz="-0.000078 0.000029 0.043631" rpy="0 0 0"/>
   </joint>
   <link name="mano_12"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_12" type="fixed">
     <parent link="left_finger4_link3"/>
     <child link="mano_12"/>
-    <origin xyz="0.018531 0.135178 -0.118087" rpy="0 0 0"/>
+    <origin xyz="-0.000000 -0.000108 0.029514" rpy="0 0 0"/>
   </joint>
   <link name="mano_13"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_13" type="fixed">
     <parent link="left_finger1_link1"/>
     <child link="mano_13"/>
-    <origin xyz="-0.006845 0.018099 -0.053120" rpy="0 0 0"/>
+    <origin xyz="-0.004739 0.005784 0.014118" rpy="0 0 0"/>
   </joint>
   <link name="mano_14"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_14" type="fixed">
     <parent link="left_finger1_link2"/>
     <child link="mano_14"/>
-    <origin xyz="-0.041563 -0.067940 -0.059992" rpy="0 0 0"/>
+    <origin xyz="-0.000126 -0.000975 0.034635" rpy="0 0 0"/>
   </joint>
   <link name="mano_15"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_15" type="fixed">
     <parent link="left_finger1_link3"/>
     <child link="mano_15"/>
-    <origin xyz="-0.066908 0.089000 -0.101471" rpy="0 0 0"/>
+    <origin xyz="0.000018 0.000228 0.029469" rpy="0 0 0"/>
   </joint>
   <link name="mano_16"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_16" type="fixed">
     <parent link="left_finger1_link4"/>
     <child link="mano_16"/>
-    <origin xyz="-0.085992 0.110473 -0.140101" rpy="0 0 0"/>
+    <origin xyz="0.000014 0.000146 0.029968" rpy="0 0 0"/>
   </joint>
   <link name="mano_17"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_17" type="fixed">
     <parent link="left_finger2_link4"/>
     <child link="mano_17"/>
-    <origin xyz="0.004199 0.191145 -0.184031" rpy="0 0 0"/>
+    <origin xyz="0.000004 0.000063 0.020982" rpy="0 0 0"/>
   </joint>
   <link name="mano_18"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_18" type="fixed">
     <parent link="left_finger3_link4"/>
     <child link="mano_18"/>
-    <origin xyz="-0.002435 0.174741 -0.168241" rpy="0 0 0"/>
+    <origin xyz="0.000013 0.000068 0.020997" rpy="0 0 0"/>
   </joint>
   <link name="mano_19"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_19" type="fixed">
     <parent link="left_finger4_link4"/>
     <child link="mano_19"/>
-    <origin xyz="0.019389 0.156360 -0.147433" rpy="0 0 0"/>
+    <origin xyz="0.000001 0.000072 0.021014" rpy="0 0 0"/>
   </joint>
   <link name="mano_20"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><sphere radius="0.004"/></geometry></visual></link>
   <joint name="mano_20" type="fixed">
     <parent link="left_finger5_link4"/>
     <child link="mano_20"/>
-    <origin xyz="0.034198 0.135841 -0.120208" rpy="0 0 0"/>
+    <origin xyz="-0.000005 0.000077 0.022530" rpy="0 0 0"/>
   </joint>
 </robot>
