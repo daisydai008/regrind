@@ -528,7 +528,7 @@ class HandInteractionMeshOneStageRetargeter:
                     w_nominal_tracking=w_nominal_tracking,
                     q_a_nominal=q_a_nominal,
                     init_t=(i == 0),
-                    n_iter=50 if i == 0 else 10,
+                    n_iter=getattr(self, 'max_n_iter', 50 if i == 0 else 10),
                 )
                 if self.debug:
                     robot_link_positions = self._get_robot_link_positions(
