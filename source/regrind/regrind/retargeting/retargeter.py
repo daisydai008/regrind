@@ -648,6 +648,13 @@ class HandInteractionMeshOneStageRetargeter:
         non_penetration_constraints = []
 
         for key, phi in phis.items():
+            # Honor activate_obj_non_penetration (previously dead code): when False,
+            # skip every collision pair that involves the object.
+            if not self.activate_obj_non_penetration and (
+                self.object_name in self.inspector.GetName(key[0])
+                or self.object_name in self.inspector.GetName(key[1])
+            ):
+                continue
             # Ignore the penetration between the object and the ground
             if (
                 self.object_name in self.inspector.GetName(key[0])
