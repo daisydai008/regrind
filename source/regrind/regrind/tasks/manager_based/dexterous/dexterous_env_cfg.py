@@ -72,8 +72,8 @@ class MySceneCfg(InteractiveSceneCfg):
     table: RigidObjectCfg = TABLE_CFG.replace(
         prim_path="/World/envs/env_.*/Table",
     )
-    # objects
-    object: ArticulationCfg = MISSING
+    # objects (ArticulationCfg for articulated tools; RigidObjectCfg for rigid single-body objects)
+    object: ArticulationCfg | RigidObjectCfg = MISSING
     # robots
     robot: ArticulationCfg = MISSING
     # lights

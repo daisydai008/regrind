@@ -49,3 +49,43 @@ class WujiHandScrewdriverPPORunnerCfg(WujiHandPPORunnerCfg):
 @configclass
 class WujiHandScissorsPPORunnerCfg(WujiHandPPORunnerCfg):
     experiment_name = "wujihand_scissors"
+
+
+@configclass
+class WujiHandEraserPPORunnerCfg(WujiHandPPORunnerCfg):
+    experiment_name = "wujihand_eraser"
+
+
+@configclass
+class WujiHandSpatulaPPORunnerCfg(WujiHandPPORunnerCfg):
+    experiment_name = "wujihand_spatula"
+
+
+@configclass
+class WujiHandGrindHandlePPORunnerCfg(WujiHandPPORunnerCfg):
+    experiment_name = "wujihand_grindhandle"
+
+
+@configclass
+class WujiHandWokLidPPORunnerCfg(WujiHandPPORunnerCfg):
+    experiment_name = "wujihand_woklid"
+
+@configclass
+class WujiHandBeakerLidPPORunnerCfg(WujiHandPPORunnerCfg):
+    experiment_name = "wujihand_beakerlid"
+
+@configclass
+class WujiHandJuicerLipPPORunnerCfg(WujiHandPPORunnerCfg):
+    experiment_name = "wujihand_juicerlip"
+
+@configclass
+class WujiHandThermosLidPPORunnerCfg(WujiHandPPORunnerCfg):
+    experiment_name = "wujihand_thermoslid"
+
+@configclass
+class WujiHandPotLidPPORunnerCfg(WujiHandPPORunnerCfg):
+    experiment_name = "wujihand_potlid"
+
+@configclass
+class WujiHandTeacupLidPPORunnerCfg(WujiHandPPORunnerCfg):
+    experiment_name = "wujihand_teacuplid"
