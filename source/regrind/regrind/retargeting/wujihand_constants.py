@@ -76,6 +76,36 @@ OBJECT_CONFIGS = {
 }
 
 
+# TactiDex rigid objects (9): primary demo + augmentation sequences, used by the
+# multi-sequence tasks (commit 81b4e01). Asset dir name differs for eraser.
+def _tactidex_entry(asset_dir: str, keypoint_file: str, demo_dir: str | None = None) -> dict:
+    demo_dir = demo_dir or asset_dir
+    return {
+        "obj_scale": 1.0,
+        "obj_scale_suffix": "",
+        "object_urdf": f"tactidex/{asset_dir}/{asset_dir}.urdf",
+        "demo_path": f"tactidex_demo/{demo_dir}/demo_interp_120fps.h5",
+        "demo_data_type": "tactidex",
+        "keypoint_paths": {"bottom": f"keypoints/{keypoint_file}"},
+        "table_height": 0.945,
+    }
+
+
+OBJECT_CONFIGS.update(
+    {
+        "beakerlid": _tactidex_entry("beakerlid", "beakerlid_bottom_100.npy"),
+        "eraser": _tactidex_entry("blackboarderaser", "eraser_bottom_68.npy", demo_dir="eraser"),
+        "grindhandle": _tactidex_entry("grindhandle", "grindhandle_bottom_100.npy"),
+        "juicerlip": _tactidex_entry("juicerlip", "juicerlip_bottom_47.npy"),
+        "potlid": _tactidex_entry("potlid", "potlid_bottom_13.npy"),
+        "spatula": _tactidex_entry("spatula", "spatula_bottom_37.npy"),
+        "teacuplid": _tactidex_entry("teacuplid", "teacuplid_bottom_79.npy"),
+        "thermoslid": _tactidex_entry("thermoslid", "thermoslid_bottom_34.npy"),
+        "woklid": _tactidex_entry("woklid", "woklid_bottom_41.npy"),
+    }
+)
+
+
 def get_object_config(object_name: str) -> dict:
     """Resolve absolute asset/demo/keypoint paths for ``object_name``.
 

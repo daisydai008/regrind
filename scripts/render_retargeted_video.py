@@ -37,6 +37,31 @@ from pydrake.geometry import (
 from regrind.retargeting.drake_utils import create_plant
 
 
+def _object_mesh_radius(urdf_path: str) -> float:
+    """Max distance from object origin to any visual-mesh vertex (OBJ only), in meters."""
+    import xml.etree.ElementTree as ET
+
+    radius = 0.0
+    try:
+        for m in ET.parse(urdf_path).getroot().iter("mesh"):
+            fn = m.get("filename", "")
+            scale = float((m.get("scale") or "1 1 1").split()[0])
+            path = os.path.join(os.path.dirname(urdf_path), fn)
+            if not (fn.endswith(".obj") and os.path.isfile(path)):
+                continue
+            verts = []
+            with open(path) as fh:
+                for line in fh:
+                    if line.startswith("v "):
+                        verts.append(line.split()[1:4])
+            if verts:
+                v = np.asarray(verts, dtype=float) * scale
+                radius = max(radius, float(np.linalg.norm(v, axis=1).max()))
+    except Exception as e:
+        print(f"[WARN] mesh radius probe failed for {urdf_path}: {e}")
+    return radius
+
+
 def _load_robot_object_cfg(robot_name: str, object_name: str):
     if robot_name == "leaphand":
         from regrind.retargeting import leaphand_constants as rc
@@ -82,7 +107,7 @@ def _look_at(eye, target, width=960, height=720, fov_y_deg=45.0):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--robot", default="wujihand", choices=("leaphand", "wujihand"))
-    p.add_argument("--object", default="scissors", choices=("scissors", "screwdriver"))
+    p.add_argument("--object", default="scissors")  # any key of the robot's OBJECT_CONFIGS
     p.add_argument("--traj", required=True, help="retargeted .h5 (robot_pos/quat/joints, object_pos/quat/joint)")
     p.add_argument("--out", default="/tmp/retarget_render.mp4")
     p.add_argument("--fps", type=int, default=120, help="original trajectory is 120fps")
@@ -93,18 +118,45 @@ def main():
     p.add_argument("--target", type=float, nargs=3, default=[0.0, 0.0, 0.98])
     p.add_argument("--auto-camera", action="store_true",
                    help="Center the camera on the trajectory bounding box instead of using --eye/--target.")
-    p.add_argument("--camera-distance", type=float, default=0.85,
-                   help="Camera distance used with --auto-camera.")
+    p.add_argument("--camera-distance", type=float, default=None,
+                   help="Camera distance used with --auto-camera. Default: auto-fit so the whole "
+                        "trajectory bounding sphere stays inside the FOV (with margin).")
     args = p.parse_args()
 
     rc, obj_cfg = _load_robot_object_cfg(args.robot, args.object)
 
     if args.auto_camera:
         with h5py.File(args.traj, "r") as f:
-            frame_points = np.concatenate(
-                [f["robot_keypoints"][:].reshape(-1, 3), f["object_pos"][:]], axis=0
-            )
+            robot_kp = f["robot_keypoints"][:].reshape(-1, 3)
+            obj_pos = f["object_pos"][:]      # (T,3)
+            obj_quat = f["object_quat"][:]    # (T,4) wxyz
+        frame_points = np.concatenate([robot_kp, obj_pos], axis=0)
+        # Include the object's surface keypoints in world frame: a root-only fit lets
+        # long meshes (e.g. spatula blade) leave the frame when the object tilts.
+        kp_local = [np.load(pth) for pth in (obj_cfg.get("object_keypoints_paths") or {}).values()
+                    if os.path.isfile(pth)]
+        if kp_local:
+            kl = np.concatenate(kp_local, axis=0)[:, :3]          # (K,3) object-local
+            q = obj_quat / np.linalg.norm(obj_quat, axis=1, keepdims=True)
+            w, u = q[:, 0], q[:, 1:]                              # (T,), (T,3)
+            p = kl[None, :, :]                                    # (1,K,3)
+            c1 = np.cross(u[:, None, :], p)
+            c2 = np.cross(u[:, None, :], c1)
+            kp_world = (p + 2.0 * (w[:, None, None] * c1 + c2) + obj_pos[:, None, :]).reshape(-1, 3)
+            frame_points = np.concatenate([frame_points, kp_world], axis=0)
         args.target = ((frame_points.min(axis=0) + frame_points.max(axis=0)) / 2).tolist()
+        if args.camera_distance is None:
+            # Sphere-fit: distance so the trajectory bbox stays in frame for any view direction.
+            # fov_y=45deg (see _look_at); margin 1.15; clamp to a sane minimum.
+            center = np.asarray(args.target)
+            radius = float(np.linalg.norm(frame_points - center, axis=1).max())
+            # Keypoints can under-cover the mesh (spatula blade tip is beyond all 37
+            # keypoints): also fit a sphere of the visual-mesh extent around the object root.
+            mesh_r = _object_mesh_radius(obj_cfg["object_urdf_file"])
+            if mesh_r > 0:
+                obj_reach = float(np.linalg.norm(obj_pos - center, axis=1).max()) + mesh_r
+                radius = max(radius, obj_reach)
+            args.camera_distance = max(radius / np.tan(np.radians(45.0) / 2) * 1.15, 0.25)
         direction = np.array([0.55, 0.55, 0.37], dtype=float)
         direction /= np.linalg.norm(direction)
         args.eye = (np.asarray(args.target) + direction * args.camera_distance).tolist()
