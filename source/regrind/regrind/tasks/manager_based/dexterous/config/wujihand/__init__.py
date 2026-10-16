@@ -227,3 +227,165 @@ gym.register(
         "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:WujiHandScrewdriverPPORunnerCfg",
     },
 )
+
+
+# Independent native-duration TactiDex sequences.
+gym.register(
+    id="Regrind-WujiHand-Eraser-S-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.wuji_eraser_s_env_cfg:WujiHandEraserSEnvCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:WujiHandEraserSPPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="Regrind-WujiHand-Eraser-S-Play-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.wuji_eraser_s_env_cfg:WujiHandEraserSEnvCfg_PLAY",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:WujiHandEraserSPPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="Regrind-WujiHand-Spatula-S-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.wuji_spatula_s_env_cfg:WujiHandSpatulaSEnvCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:WujiHandSpatulaSPPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="Regrind-WujiHand-Spatula-S-Play-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.wuji_spatula_s_env_cfg:WujiHandSpatulaSEnvCfg_PLAY",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:WujiHandSpatulaSPPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="Regrind-WujiHand-GrindHandle-S-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.wuji_grindhandle_s_env_cfg:WujiHandGrindHandleSEnvCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:WujiHandGrindHandleSPPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="Regrind-WujiHand-GrindHandle-S-Play-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.wuji_grindhandle_s_env_cfg:WujiHandGrindHandleSEnvCfg_PLAY",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:WujiHandGrindHandleSPPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="Regrind-WujiHand-Knife-S-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.wuji_knife_s_env_cfg:WujiHandKnifeSEnvCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:WujiHandKnifeSPPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="Regrind-WujiHand-Knife-S-Play-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.wuji_knife_s_env_cfg:WujiHandKnifeSEnvCfg_PLAY",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:WujiHandKnifeSPPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="Regrind-WujiHand-Bowl-S-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.wuji_bowl_s_env_cfg:WujiHandBowlSEnvCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:WujiHandBowlSPPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="Regrind-WujiHand-Bowl-S-Play-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.wuji_bowl_s_env_cfg:WujiHandBowlSEnvCfg_PLAY",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:WujiHandBowlSPPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="Regrind-WujiHand-Spoon-S-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.wuji_spoon_s_env_cfg:WujiHandSpoonSEnvCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:WujiHandSpoonSPPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="Regrind-WujiHand-Spoon-S-Play-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.wuji_spoon_s_env_cfg:WujiHandSpoonSEnvCfg_PLAY",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:WujiHandSpoonSPPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="Regrind-WujiHand-KettleBlack-S-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.wuji_kettleblack_s_env_cfg:WujiHandKettleBlackSEnvCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:WujiHandKettleBlackSPPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="Regrind-WujiHand-KettleBlack-S-Play-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.wuji_kettleblack_s_env_cfg:WujiHandKettleBlackSEnvCfg_PLAY",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:WujiHandKettleBlackSPPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="Regrind-WujiHand-SauceBottle-S-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.wuji_saucebottle_s_env_cfg:WujiHandSauceBottleSEnvCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:WujiHandSauceBottleSPPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="Regrind-WujiHand-SauceBottle-S-Play-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.wuji_saucebottle_s_env_cfg:WujiHandSauceBottleSEnvCfg_PLAY",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:WujiHandSauceBottleSPPORunnerCfg",
+    },
+)

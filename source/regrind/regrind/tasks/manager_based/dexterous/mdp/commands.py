@@ -63,7 +63,8 @@ class MotionLoader:
         auxiliary_traj_dir: str | None = None,
         object_keypoints_local: dict[str, np.ndarray] = None,
         is_articulated_object: bool = True,
-        device: str = "cuda:0"
+        device: str = "cuda:0",
+        speed_factor: float | None = None,
     ):
         """
         Args:
@@ -88,6 +89,7 @@ class MotionLoader:
             assert os.path.isdir(auxiliary_traj_dir), f"Invalid augmentation trajectory directory: {auxiliary_traj_dir}"
         self.device = device
         self.demo_dt = demo_dt
+        self.speed_factor = speed_factor
         self.env_dt = env_dt
         self.env_episode_length = env_episode_length
         self.object_joint_axis = object_joint_axis
@@ -137,9 +139,9 @@ class MotionLoader:
         else:
             raise ValueError("No qpos or wrist_pos_world found in demo to infer original demo length.")
 
-        if self.cfg.speed_factor is not None:
+        if self.speed_factor is not None:
             # explicit override, required for native-speed pools of variable duration
-            speed_factor = self.cfg.speed_factor
+            speed_factor = self.speed_factor
         else:
             speed_factor = ((original_demo_len - 1) * self.demo_dt) / ((self.env_episode_length - 1) * self.env_dt)  # demo duration / env episode duration
         print(f"Original demo length: {original_demo_len}, demo dt: {self.demo_dt}, env episode length: {self.env_episode_length}, env dt: {self.env_dt}")
@@ -219,7 +221,7 @@ class MotionLoader:
         else:
             # legacy pool layout (auxiliary dirs hold only retargeted h5): repeat the primary's MANO.
             # NOTE: auxiliary sequences' MANO is then only valid for the primary (visualization only).
-            self.demo_mano_joint_coord = self.demo_mano_joint_coord.repeat(len(demo_qpos_list), 1, 1)
+            self.demo_mano_joint_coord = torch.from_numpy(demo_mano_joint_coord).float().to(self.device)
 
         self.total_demo_len = self.demo_qpos.shape[0]
         assert self.demo_qvel.shape[0] == self.total_demo_len
@@ -425,7 +427,8 @@ class MotionCommand(CommandTerm):
             object_joint_axis=self.cfg.object_joint_axis,
             object_keypoints_local=object_keypoints_local,
             is_articulated_object=isinstance(self.object, Articulation),
-            device=self.device
+            device=self.device,
+            speed_factor=self.cfg.speed_factor,
         )
         # If debug visuals were requested during base init, defer marker creation until motion exists.
         if self.cfg.debug_vis and self.cfg.debug_vis_keypoints and getattr(self, "object_keypoint_markers", None) is None:
