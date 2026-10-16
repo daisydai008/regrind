@@ -49,7 +49,7 @@ class WujiHandEraserSEnvCfg(WujiHandBaseEnvCfg):
         self.commands.motion.retargeted_traj_path = f"{os.environ['REGRIND_DATA_DIR']}/retargeted_traj_v2/wujihand/{obj}/retargeted_120fps.h5"
         self.commands.motion.auxiliary_traj_dir = None
         self.commands.motion.speed_factor = 1.0  # native speed (no time warp)
-        self.commands.motion.traj_aug_enabled = True
+        self.commands.motion.traj_aug_enabled = False
         self.commands.motion.traj_aug_translation_lower_bound = (-0.05, -0.05, 0.0)
         self.commands.motion.traj_aug_translation_upper_bound = (0.05, 0.05, 0.0)
         self.commands.motion.traj_aug_yaw_range = (-0.5235987756, 0.5235987756)
