@@ -26,8 +26,8 @@ class WujiHandEraserSEnvCfg(WujiHandBaseEnvCfg):
 
         self.scene.table.init_state.pos = (0.0, 0.0, 0.012 - self.scene.table.spawn.size[2] / 2)
 
-        self.commands.motion.object_pos_lower_bound = (-0.501, -0.096, 0.0)
-        self.commands.motion.object_pos_upper_bound = (-0.189, 0.253, 0.369)
+        self.commands.motion.object_pos_lower_bound = (-0.551, -0.146, 0.0)
+        self.commands.motion.object_pos_upper_bound = (-0.139, 0.303, 0.369)
 
         self.commands.motion.keypoint_paths: dict[str, str] = {
             "bottom": f"{os.environ['REGRIND_DATA_DIR']}/keypoints/eraser_bottom_68.npy",

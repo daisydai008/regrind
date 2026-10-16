@@ -25,8 +25,8 @@ class WujiHandSpatulaSEnvCfg(WujiHandBaseEnvCfg):
 
         self.scene.table.init_state.pos = (0.0, 0.0, 0.012 - self.scene.table.spawn.size[2] / 2)
 
-        self.commands.motion.object_pos_lower_bound = (-0.367, -0.236, 0.0)
-        self.commands.motion.object_pos_upper_bound = (-0.023, 0.148, 0.433)
+        self.commands.motion.object_pos_lower_bound = (-0.417, -0.286, 0.0)
+        self.commands.motion.object_pos_upper_bound = (0.027, 0.198, 0.433)
 
         self.commands.motion.keypoint_paths: dict[str, str] = {
             "bottom": f"{os.environ['REGRIND_DATA_DIR']}/keypoints/spatula_bottom_37.npy",

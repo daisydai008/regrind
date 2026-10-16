@@ -25,8 +25,8 @@ class WujiHandGrindHandleSEnvCfg(WujiHandBaseEnvCfg):
 
         self.scene.table.init_state.pos = (0.0, 0.0, 0.012 - self.scene.table.spawn.size[2] / 2)
 
-        self.commands.motion.object_pos_lower_bound = (-0.454, -0.018, 0.0)
-        self.commands.motion.object_pos_upper_bound = (-0.202, 0.205, 0.419)
+        self.commands.motion.object_pos_lower_bound = (-0.504, -0.068, 0.0)
+        self.commands.motion.object_pos_upper_bound = (-0.152, 0.255, 0.419)
 
         self.commands.motion.keypoint_paths: dict[str, str] = {
             "bottom": f"{os.environ['REGRIND_DATA_DIR']}/keypoints/grindhandle_bottom_70.npy",

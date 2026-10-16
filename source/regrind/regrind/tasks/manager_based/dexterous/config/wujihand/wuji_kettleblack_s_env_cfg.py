@@ -25,8 +25,8 @@ class WujiHandKettleBlackSEnvCfg(WujiHandBaseEnvCfg):
 
         self.scene.table.init_state.pos = (0.0, 0.0, 0.012 - self.scene.table.spawn.size[2] / 2)
 
-        self.commands.motion.object_pos_lower_bound = (-0.364, -0.109, 0.0)
-        self.commands.motion.object_pos_upper_bound = (-0.089, 0.149, 0.526)
+        self.commands.motion.object_pos_lower_bound = (-0.414, -0.159, 0.0)
+        self.commands.motion.object_pos_upper_bound = (-0.039, 0.199, 0.526)
 
         self.commands.motion.keypoint_paths: dict[str, str] = {
             "bottom": f"{os.environ['REGRIND_DATA_DIR']}/keypoints/kettleblack_bottom_8.npy",
