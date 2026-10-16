@@ -10,7 +10,7 @@
     </inertial>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
-      <geometry><mesh filename="3DModel.obj" scale="1 1 1"/></geometry>
+      <geometry><mesh filename="knife_visual.obj" scale="1 1 1"/></geometry>
     </visual>
       <collision>
         <origin rpy="0 0 0" xyz="0 0 0"/>
