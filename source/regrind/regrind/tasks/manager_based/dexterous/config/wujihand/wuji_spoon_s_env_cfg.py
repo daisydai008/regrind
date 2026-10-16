@@ -25,8 +25,8 @@ class WujiHandSpoonSEnvCfg(WujiHandBaseEnvCfg):
 
         self.scene.table.init_state.pos = (0.0, 0.0, 0.012 - self.scene.table.spawn.size[2] / 2)
 
-        self.commands.motion.object_pos_lower_bound = (-0.338, -0.053, 0.0)
-        self.commands.motion.object_pos_upper_bound = (-0.155, 0.313, 0.36)
+        self.commands.motion.object_pos_lower_bound = (-0.389, -0.103, 0.0)
+        self.commands.motion.object_pos_upper_bound = (-0.105, 0.363, 0.41)
 
         self.commands.motion.keypoint_paths: dict[str, str] = {
             "bottom": f"{os.environ['REGRIND_DATA_DIR']}/keypoints/spoon_bottom_37.npy",

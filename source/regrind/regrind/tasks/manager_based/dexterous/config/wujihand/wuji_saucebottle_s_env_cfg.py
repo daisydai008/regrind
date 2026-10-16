@@ -25,8 +25,8 @@ class WujiHandSauceBottleSEnvCfg(WujiHandBaseEnvCfg):
 
         self.scene.table.init_state.pos = (0.0, 0.0, 0.012 - self.scene.table.spawn.size[2] / 2)
 
-        self.commands.motion.object_pos_lower_bound = (-0.399, -0.195, 0.0)
-        self.commands.motion.object_pos_upper_bound = (-0.223, 0.041, 0.34)
+        self.commands.motion.object_pos_lower_bound = (-0.449, -0.245, 0.0)
+        self.commands.motion.object_pos_upper_bound = (-0.173, 0.091, 0.391)
 
         self.commands.motion.keypoint_paths: dict[str, str] = {
             "bottom": f"{os.environ['REGRIND_DATA_DIR']}/keypoints/saucebottle_bottom_34.npy",
