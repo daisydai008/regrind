@@ -14,7 +14,7 @@ class WujiHandSpatulaEnvCfg(WujiHandBaseEnvCfg):
     """Wipe (blackboard spatula, right hand) with multi-sequence TactiDex demos.
 
     Primary demo: S0H01A0036T1 (touch->use trimmed, 1081 @120fps = 9.0 s).
-    Augmentation: 19 more real sequences (S0-S9 x T1/T2) in augmentation_traj_dir.
+    Augmentation: 19 more real sequences (S0-S9 x T1/T2) in auxiliary_traj_dir.
     """
 
     def __post_init__(self):
@@ -50,7 +50,8 @@ class WujiHandSpatulaEnvCfg(WujiHandBaseEnvCfg):
         self.commands.motion.demo_path = f"{os.environ['REGRIND_DATA_DIR']}/tactidex_demo/{obj}/demo_interp_120fps.h5"
         self.commands.motion.demo_dt = 1.0 / 120.0
         self.commands.motion.retargeted_traj_path = f"{os.environ['REGRIND_DATA_DIR']}/retargeted_traj/wujihand/{obj}/retargeted_120fps.h5"
-        self.commands.motion.augmentation_traj_dir = f"{os.environ['REGRIND_DATA_DIR']}/retargeted_traj/wujihand/{obj}/aug"
+        self.commands.motion.auxiliary_traj_dir = f"{os.environ['REGRIND_DATA_DIR']}/retargeted_traj/wujihand/{obj}/aug"
+        self.commands.motion.speed_factor = 1.0  # native speed (no time warp)
         self.commands.motion.traj_aug_enabled = True
         self.commands.motion.traj_aug_translation_lower_bound = (-0.05, -0.05, 0.0)
         self.commands.motion.traj_aug_translation_upper_bound = (0.05, 0.05, 0.0)

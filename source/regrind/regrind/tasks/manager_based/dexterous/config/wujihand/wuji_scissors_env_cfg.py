@@ -40,7 +40,7 @@ class WujiHandScissorsEnvCfg(WujiHandBaseEnvCfg):
         self.commands.motion.demo_path = f"{os.environ['REGRIND_DATA_DIR']}/arctic_demo/arctic_leap_scissors/demo_interp_120fps.h5"
         self.commands.motion.demo_dt = 1.0 / 120.0
         self.commands.motion.retargeted_traj_path = f"{os.environ['REGRIND_DATA_DIR']}/retargeted_traj/wujihand/scissors/retargeted_120fps.h5"
-        self.commands.motion.augmentation_traj_dir = None
+        self.commands.motion.auxiliary_traj_dir = None
         self.commands.motion.traj_aug_enabled = True
         self.commands.motion.traj_aug_translation_lower_bound = (-0.05, -0.05, 0.0)
         self.commands.motion.traj_aug_translation_upper_bound = (0.05, 0.05, 0.0)

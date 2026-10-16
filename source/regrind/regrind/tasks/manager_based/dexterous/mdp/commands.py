@@ -60,7 +60,7 @@ class MotionLoader:
         env_episode_length: int,
         retargeted_traj_path: str,
         object_joint_axis: np.ndarray,
-        augmentation_traj_dir: str | None = None,
+        auxiliary_traj_dir: str | None = None,
         object_keypoints_local: dict[str, np.ndarray] = None,
         is_articulated_object: bool = True,
         device: str = "cuda:0"
@@ -72,7 +72,7 @@ class MotionLoader:
             env_dt: environment time step size in seconds.
             retargeted_traj_path: path to the retargeted trajectory file
             object_joint_axis: axis of the object joint.
-            augmentation_traj_dir: path to the augmentation trajectory directory
+            auxiliary_traj_dir: path to the augmentation trajectory directory
             env_episode_length: number of environment timesteps in an episode.
                 NOTE: The motion data will be resampled according to the environment episode length.
                       Make sure all demos have the same length and are properly aligned.
@@ -84,8 +84,8 @@ class MotionLoader:
         """
         assert os.path.isfile(demo_path), f"Invalid demo path: {demo_path}"
         assert os.path.isfile(retargeted_traj_path), f"Invalid retargeted trajectory path: {retargeted_traj_path}"
-        if augmentation_traj_dir is not None:
-            assert os.path.isdir(augmentation_traj_dir), f"Invalid augmentation trajectory directory: {augmentation_traj_dir}"
+        if auxiliary_traj_dir is not None:
+            assert os.path.isdir(auxiliary_traj_dir), f"Invalid augmentation trajectory directory: {auxiliary_traj_dir}"
         self.device = device
         self.demo_dt = demo_dt
         self.env_dt = env_dt
@@ -98,7 +98,7 @@ class MotionLoader:
         self.qpos_dim = QPOS_DIM
         self.demo_qpos_index = {k: v.clone() for k, v in DEMO_QPOS_INDEX.items()}
         self.demo_qvel_index = {k: v.clone() for k, v in DEMO_QVEL_INDEX.items()}
-        self._load_data(demo_path, retargeted_traj_path, augmentation_traj_dir)
+        self._load_data(demo_path, retargeted_traj_path, auxiliary_traj_dir)
 
     @property
     def body_pos_w(self) -> torch.Tensor:
@@ -116,7 +116,7 @@ class MotionLoader:
     def body_ang_vel_w(self) -> torch.Tensor:
         return self._body_ang_vel_w[:, self._body_indexes]
 
-    def _load_data(self, demo_path: str, retargeted_traj_path: str, augmentation_traj_dir: str | None = None):
+    def _load_data(self, demo_path: str, retargeted_traj_path: str, auxiliary_traj_dir: str | None = None):
 
         # Load demo
         demo = read_h5_to_dict(demo_path)
@@ -137,7 +137,11 @@ class MotionLoader:
         else:
             raise ValueError("No qpos or wrist_pos_world found in demo to infer original demo length.")
 
-        speed_factor = ((original_demo_len - 1) * self.demo_dt) / ((self.env_episode_length - 1) * self.env_dt)  # demo duration / env episode duration
+        if self.cfg.speed_factor is not None:
+            # explicit override, required for native-speed pools of variable duration
+            speed_factor = self.cfg.speed_factor
+        else:
+            speed_factor = ((original_demo_len - 1) * self.demo_dt) / ((self.env_episode_length - 1) * self.env_dt)  # demo duration / env episode duration
         print(f"Original demo length: {original_demo_len}, demo dt: {self.demo_dt}, env episode length: {self.env_episode_length}, env dt: {self.env_dt}")
         print(f"Motion will be scaled by speed factor: {speed_factor}")
         if "mano_joint_coord" in demo:
@@ -169,12 +173,15 @@ class MotionLoader:
         demo_length_list.append(qpos.shape[0])
         accumulated_demo_length_list.append(qpos.shape[0])
 
-        # Load augmentation trajectories
-        if augmentation_traj_dir is not None:
-            augmentation_traj_files = os.listdir(augmentation_traj_dir)
-            for augmentation_traj_file in augmentation_traj_files:
+        # Load auxiliary trajectories (independent real captures, not synthetic augmentation)
+        auxiliary_mano_list = []
+        if auxiliary_traj_dir is not None:
+            auxiliary_traj_files = sorted(os.listdir(auxiliary_traj_dir))
+            for auxiliary_traj_file in auxiliary_traj_files:
+                auxiliary_entry = os.path.join(auxiliary_traj_dir, auxiliary_traj_file)
+                auxiliary_retargeted_path = os.path.join(auxiliary_entry, "retargeted_120fps.h5") if os.path.isdir(auxiliary_entry) else auxiliary_entry
                 qpos, qvel, retargeted_hand_keypoints, object_keypoints_pos = self._load_retargeted_traj(
-                    os.path.join(augmentation_traj_dir, augmentation_traj_file),
+                    auxiliary_retargeted_path,
                     speed_factor=speed_factor,
                 )
                 demo_qpos_list.append(qpos)
@@ -183,6 +190,14 @@ class MotionLoader:
                 object_keypoints_pos_list.append(object_keypoints_pos)
                 demo_length_list.append(qpos.shape[0])
                 accumulated_demo_length_list.append(accumulated_demo_length_list[-1] + qpos.shape[0])
+                # per-sequence MANO data (when the sequence dir carries its own demo h5)
+                auxiliary_demo_path = os.path.join(auxiliary_entry, "demo_interp_120fps.h5") if os.path.isdir(auxiliary_entry) else None
+                if auxiliary_demo_path is not None and os.path.isfile(auxiliary_demo_path):
+                    auxiliary_demo = read_h5_to_dict(auxiliary_demo_path)
+                    auxiliary_mano, _ = rescale_motion(
+                        auxiliary_demo["mano_joint_coords"], motion_type="position", speed_factor=speed_factor, dt=self.demo_dt, target_dt=self.env_dt
+                    )
+                    auxiliary_mano_list.append(auxiliary_mano)
 
         # Concatenate all trajectories (total_demo_len = sum(len(demo_qpos_list)))
         self.demo_qpos = torch.cat(demo_qpos_list, dim=0)  # (total_demo_len, qpos_dim)
@@ -197,11 +212,14 @@ class MotionLoader:
             torch.full((len_i,), start_i, dtype=torch.long, device=self.device)
             for len_i, start_i in zip(demo_length_list, [0] + accumulated_demo_length_list[:-1])
         ])  # (total_demo_len,)
-        # TODO: for now we assume all demos have the same length. So we just repeat the mano joint coord for all demos.
-        # NOTE: Also note that the mano joint coord is only available for the original demo.
-        #       So they will be off for the augmentation demos and should not be used as e.g. tracking targets.
-        self.demo_mano_joint_coord = torch.from_numpy(demo_mano_joint_coord).float().to(self.device)  # (original_demo_len, 21, 3)
-        self.demo_mano_joint_coord = self.demo_mano_joint_coord.repeat(len(demo_qpos_list), 1, 1)  # (total_demo_len, 21, 3)
+        if auxiliary_mano_list:
+            # each sequence contributes its own MANO array (native length)
+            demo_mano_joint_coord = np.concatenate([demo_mano_joint_coord] + auxiliary_mano_list, axis=0)
+            self.demo_mano_joint_coord = torch.from_numpy(demo_mano_joint_coord).float().to(self.device)
+        else:
+            # legacy pool layout (auxiliary dirs hold only retargeted h5): repeat the primary's MANO.
+            # NOTE: auxiliary sequences' MANO is then only valid for the primary (visualization only).
+            self.demo_mano_joint_coord = self.demo_mano_joint_coord.repeat(len(demo_qpos_list), 1, 1)
 
         self.total_demo_len = self.demo_qpos.shape[0]
         assert self.demo_qvel.shape[0] == self.total_demo_len
@@ -403,7 +421,7 @@ class MotionCommand(CommandTerm):
             env_dt=env.step_dt,
             env_episode_length=env.max_episode_length,
             retargeted_traj_path=self.cfg.retargeted_traj_path,
-            augmentation_traj_dir=self.cfg.augmentation_traj_dir,
+            auxiliary_traj_dir=self.cfg.auxiliary_traj_dir,
             object_joint_axis=self.cfg.object_joint_axis,
             object_keypoints_local=object_keypoints_local,
             is_articulated_object=isinstance(self.object, Articulation),
@@ -836,10 +854,8 @@ class MotionCommand(CommandTerm):
             import wandb
             import numpy as np
 
-            if wandb.run is not None:
-                # NOTE: assume all demos have the same length
+            if wandb.run is not None and bool((self.motion.demo_lengths == self.motion.demo_lengths[0]).all()):
                 demo_len = self.motion.demo_lengths[0]
-                assert all(self.motion.demo_lengths == demo_len), "All demos must have the same length"
                 wandb.log(
                     {
                         "Metrics/motion/sampled_timesteps": wandb.Histogram(
@@ -1189,7 +1205,8 @@ class MotionCommandCfg(CommandTermCfg):
     demo_path: str = MISSING
     demo_dt: float = MISSING
     retargeted_traj_path: str = MISSING
-    augmentation_traj_dir: str | None = None
+    auxiliary_traj_dir: str | None = None
+    speed_factor: float | None = None  # explicit override; pin 1.0 for native-speed pools
 
     keypoint_paths: dict[str, str] = MISSING
     keypoint_body_prim_paths: dict[str, str] = MISSING
