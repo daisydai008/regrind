@@ -23,10 +23,10 @@ class WujiHandBowlSEnvCfg(WujiHandBaseEnvCfg):
 
         self.scene.object = BOWL_OBJECT_CFG.replace(prim_path="{ENV_REGEX_NS}/Object")
 
-        self.scene.table.init_state.pos = (0.0, 0.0, 0.952 - self.scene.table.spawn.size[2] / 2)
+        self.scene.table.init_state.pos = (0.0, 0.0, 0.012 - self.scene.table.spawn.size[2] / 2)
 
-        self.commands.motion.object_pos_lower_bound = (-0.25, -0.25, 0.95)
-        self.commands.motion.object_pos_upper_bound = (0.25, 0.25, 1.5)
+        self.commands.motion.object_pos_lower_bound = (-0.666, 0.002, 0.0)
+        self.commands.motion.object_pos_upper_bound = (-0.177, 0.203, 0.509)
 
         self.commands.motion.keypoint_paths: dict[str, str] = {
             "bottom": f"{os.environ['REGRIND_DATA_DIR']}/keypoints/bowl_bottom_41.npy",
