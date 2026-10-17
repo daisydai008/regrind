@@ -84,3 +84,25 @@ def hit_table(
 
     max_mag = torch.stack(mags, dim=-1).max(dim=-1).values
     return max_mag > force_threshold
+
+
+def hit_table_outside_window(
+    env: ManagerBasedRLEnv,
+    sensor_names: list[str],
+    command_name: str,
+    allowed_windows_s: list[tuple[float, float]],
+    force_threshold: float = 2.0,
+) -> torch.Tensor:
+    """Apply hit_table outside closed intervals in the current demo's time base.
+
+    Each interval includes both endpoints. Demo-relative steps include RSI offsets
+    and reflect partial resets; episode elapsed time is deliberately not used.
+    Empty intervals retain the original hit_table behavior.
+    """
+    raw_hit = hit_table(env, sensor_names, force_threshold)
+    command: MotionCommand = env.command_manager.get_term(command_name)
+    time_s = command.timesteps_in_current_demo.to(torch.float64) * env.step_dt
+    allowed = torch.zeros_like(raw_hit)
+    for start_s, end_s in allowed_windows_s:
+        allowed |= (time_s >= start_s - 1e-9) & (time_s <= end_s + 1e-9)
+    return raw_hit & ~allowed

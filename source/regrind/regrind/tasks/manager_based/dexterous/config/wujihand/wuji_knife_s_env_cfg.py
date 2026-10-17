@@ -6,6 +6,7 @@ from isaaclab.managers import SceneEntityCfg
 from .wuji_base_env_cfg import WujiHandBaseEnvCfg
 from regrind.objects.tactidex_objects import KNIFE_OBJECT_CFG
 from regrind.tasks.manager_based.dexterous.mdp import randomize_rigid_body_material
+from regrind.tasks.manager_based.dexterous.mdp.terminations import hit_table_outside_window
 from regrind.envs.events import randomize_rigid_object_com
 
 
@@ -23,10 +24,22 @@ class WujiHandKnifeSEnvCfg(WujiHandBaseEnvCfg):
 
         self.scene.object = KNIFE_OBJECT_CFG.replace(prim_path="{ENV_REGEX_NS}/Object")
 
-        self.scene.table.init_state.pos = (0.0, 0.0, 0.012 - self.scene.table.spawn.size[2] / 2)
+        self.scene.table.init_state.pos = (0.0, 0.0, 0.002 - self.scene.table.spawn.size[2] / 2)
 
-        self.commands.motion.object_pos_lower_bound = (-0.343, -0.177, 0.0)
-        self.commands.motion.object_pos_upper_bound = (-0.17, 0.126, 0.345)
+        # Source: TactiDex_Cut_S0H01A0022T1_R/demo_30fps.h5, MANO any
+        # keypoint z<0.012, contiguous intervals expanded by ±10 source frames,
+        # clipped to [132,560], then shifted to this cropped demo's time base.
+        # The 12 mm annotation threshold is retained by WO-K1 revision 3;
+        # it is distinct from the 2 mm scene surface. Intervals are closed.
+        self.terminations.hit_table.func = hit_table_outside_window
+        self.terminations.hit_table.params.update(
+            command_name="motion",
+            allowed_windows_s=[(a / 30.0, b / 30.0) for a, b in
+                               [(133, 161), (192, 225), (249, 280), (297, 333), (354, 392)]],
+        )
+
+        self.commands.motion.object_pos_lower_bound = (-0.443, -0.277, 0.0)
+        self.commands.motion.object_pos_upper_bound = (-0.070, 0.226, 0.395)
 
         self.commands.motion.keypoint_paths: dict[str, str] = {
             "bottom": f"{os.environ['REGRIND_DATA_DIR']}/keypoints/knife_bottom_50.npy",
@@ -48,7 +61,7 @@ class WujiHandKnifeSEnvCfg(WujiHandBaseEnvCfg):
         self.commands.motion.retargeted_traj_path = f"{os.environ['REGRIND_DATA_DIR']}/retargeted_traj_v2/wujihand/{obj}/retargeted_120fps.h5"
         self.commands.motion.auxiliary_traj_dir = None
         self.commands.motion.speed_factor = 1.0  # native speed (no time warp)
-        self.commands.motion.traj_aug_enabled = True
+        self.commands.motion.traj_aug_enabled = False
         self.commands.motion.traj_aug_translation_lower_bound = (-0.05, -0.05, 0.0)
         self.commands.motion.traj_aug_translation_upper_bound = (0.05, 0.05, 0.0)
         self.commands.motion.traj_aug_yaw_range = (-0.5235987756, 0.5235987756)

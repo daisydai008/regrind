@@ -655,14 +655,9 @@ class HandInteractionMeshOneStageRetargeter:
                 or self.object_name in self.inspector.GetName(key[1])
             ):
                 continue
-            # Ignore the penetration between the object and the ground
-            if (
-                self.object_name in self.inspector.GetName(key[0])
-                and "ground" in self.inspector.GetName(key[1])
-            ) or (
-                "ground" in self.inspector.GetName(key[0])
-                and self.object_name in self.inspector.GetName(key[1])
-            ):
+            # Fixed demo objects may intersect supporting ground/table geometry.
+            # Hand–support and hand–object constraints remain active.
+            if self._is_object_support_pair(key):
                 continue
 
             Ja_n = Js[key][self.q_a_indices]
@@ -932,6 +927,15 @@ class HandInteractionMeshOneStageRetargeter:
         )
         return J_body
 
+    def _is_object_support_pair(self, key) -> bool:
+        """Exempt only demo-object pairs with ground or our fixed table slab."""
+        a, b = (self.inspector.GetName(g) for g in key)
+        return (
+            self.object_name in a and ("ground" in b or b == "table::collision")
+        ) or (
+            self.object_name in b and ("ground" in a or a == "table::collision")
+        )
+
     def _compute_max_penetration(self, q: np.ndarray):
         """Compute maximum penetration beyond tolerance at configuration q.
 
@@ -944,14 +948,8 @@ class HandInteractionMeshOneStageRetargeter:
         max_penetration = 0.0
         worst_pair = None
         for key, phi in phis.items():
-            # Skip object–ground pairs, consistent with constraint setup
-            if (
-                self.object_name in self.inspector.GetName(key[0])
-                and "ground" in self.inspector.GetName(key[1])
-            ) or (
-                "ground" in self.inspector.GetName(key[0])
-                and self.object_name in self.inspector.GetName(key[1])
-            ):
+            # Same object–support exemption as constraint setup.
+            if self._is_object_support_pair(key):
                 continue
             violation = -(phi + self.penetration_tolerance)
             if violation > max_penetration:
