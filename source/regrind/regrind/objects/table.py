@@ -3,7 +3,7 @@ import isaaclab.sim as sim_utils
 
 TABLE_CFG = RigidObjectCfg(
     spawn=sim_utils.CuboidCfg(
-        size=(0.7, 0.7, 0.4),
+        size=(1.4, 1.0, 0.4),
         visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(0.5, 0.5, 0.5), metallic=0.2),
         rigid_props=sim_utils.RigidBodyPropertiesCfg(
             kinematic_enabled=True,

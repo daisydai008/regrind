@@ -23,7 +23,7 @@ class WujiHandGrindHandleSEnvCfg(WujiHandBaseEnvCfg):
 
         self.scene.object = GRINDHANDLE_OBJECT_CFG.replace(prim_path="{ENV_REGEX_NS}/Object")
 
-        self.scene.table.init_state.pos = (0.0, 0.0, 0.012 - self.scene.table.spawn.size[2] / 2)
+        self.scene.table.init_state.pos = (-0.15, 0.0, 0.012 - self.scene.table.spawn.size[2] / 2)
 
         self.commands.motion.object_pos_lower_bound = (-0.504, -0.068, 0.0)
         self.commands.motion.object_pos_upper_bound = (-0.152, 0.255, 0.419)

@@ -23,7 +23,7 @@ class WujiHandSpoonSEnvCfg(WujiHandBaseEnvCfg):
 
         self.scene.object = SPOON_OBJECT_CFG.replace(prim_path="{ENV_REGEX_NS}/Object")
 
-        self.scene.table.init_state.pos = (0.0, 0.0, 0.012 - self.scene.table.spawn.size[2] / 2)
+        self.scene.table.init_state.pos = (-0.15, 0.0, 0.012 - self.scene.table.spawn.size[2] / 2)
 
         self.commands.motion.object_pos_lower_bound = (-0.439, -0.153, 0.0)
         self.commands.motion.object_pos_upper_bound = (-0.055, 0.413, 0.41)

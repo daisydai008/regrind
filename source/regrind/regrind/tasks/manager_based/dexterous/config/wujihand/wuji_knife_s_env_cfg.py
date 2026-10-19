@@ -24,7 +24,7 @@ class WujiHandKnifeSEnvCfg(WujiHandBaseEnvCfg):
 
         self.scene.object = KNIFE_OBJECT_CFG.replace(prim_path="{ENV_REGEX_NS}/Object")
 
-        self.scene.table.init_state.pos = (0.0, 0.0, 0.002 - self.scene.table.spawn.size[2] / 2)
+        self.scene.table.init_state.pos = (-0.15, 0.0, 0.002 - self.scene.table.spawn.size[2] / 2)
 
         # Source: TactiDex_Cut_S0H01A0022T1_R/demo_30fps.h5, MANO any
         # keypoint z<0.012, contiguous intervals expanded by ±10 source frames,
