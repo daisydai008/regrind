@@ -965,6 +965,10 @@ class HandInteractionMeshOneStageRetargeter:
         J_XC_dict = {}
         p_XC_dict = {}
 
+        # Synchronize before reading either the object or manipulator poses.
+        q_ad = InitializeAutoDiff(q)
+        self.plant_ad.SetPositions(self.plant_context_ad, q_ad)
+
         if obj_frame:
             obj_frame_id = self.plant_ad.GetBodyFrameIdOrThrow(
                 self.plant_ad.GetBodyByName("bottom").index()
@@ -979,8 +983,6 @@ class HandInteractionMeshOneStageRetargeter:
             P_WO = None
 
         for name, link_name in links.items():
-            q_ad = InitializeAutoDiff(q)
-            self.plant_ad.SetPositions(self.plant_context_ad, q_ad)
             P_WC = self.plant_ad.GetBodyByName(link_name).body_frame().CalcPoseInWorld(self.plant_context_ad)
 
             if obj_frame:
