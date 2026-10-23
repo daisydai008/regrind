@@ -1,0 +1,724 @@
+{
+  "approved_for_retargeting": false,
+  "approved_for_training": false,
+  "builder_sha256": "0904da12ac2573cf24d334308909a8353af0e7cbd090f2ec3335c07de4c1bdde",
+  "collision_approximation": "Fills concavity; not production accepted; no decomposition or tuning",
+  "collision_policy": "per_mesh_convex_hull",
+  "containment_tolerance_m": 1e-10,
+  "coordinates": {
+    "conversion": "none",
+    "mesh_scale_and_origin": "preserved exactly; not baked into vertices",
+    "unit_basis": "Vendor URDF convention assumed; STL is unitless",
+    "units": "metres"
+  },
+  "dependency_versions": {
+    "drake": "1.51.1",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "trimesh": "5.1.1"
+  },
+  "drake": {
+    "joints_in_vendor_urdf_order": [
+      {
+        "drake_joint_index": 0,
+        "name": "r_wrist_fixed",
+        "num_positions": 0,
+        "position_start": 7,
+        "type": "fixed",
+        "velocity_start": 6
+      },
+      {
+        "drake_joint_index": 1,
+        "name": "r_thumb_cmc_flex",
+        "num_positions": 1,
+        "position_start": 7,
+        "type": "revolute",
+        "velocity_start": 6
+      },
+      {
+        "drake_joint_index": 2,
+        "name": "r_thumb_cmc_abd",
+        "num_positions": 1,
+        "position_start": 8,
+        "type": "revolute",
+        "velocity_start": 7
+      },
+      {
+        "drake_joint_index": 3,
+        "name": "r_thumb_mcp",
+        "num_positions": 1,
+        "position_start": 9,
+        "type": "revolute",
+        "velocity_start": 8
+      },
+      {
+        "drake_joint_index": 4,
+        "name": "r_thumb_ip",
+        "num_positions": 1,
+        "position_start": 10,
+        "type": "revolute",
+        "velocity_start": 9
+      },
+      {
+        "drake_joint_index": 5,
+        "name": "r_thumb_tip_fixed",
+        "num_positions": 0,
+        "position_start": 11,
+        "type": "fixed",
+        "velocity_start": 10
+      },
+      {
+        "drake_joint_index": 6,
+        "name": "r_thumb_tip_sensor_frame_fixed",
+        "num_positions": 0,
+        "position_start": 11,
+        "type": "fixed",
+        "velocity_start": 10
+      },
+      {
+        "drake_joint_index": 7,
+        "name": "r_index_finger_mcp_flex",
+        "num_positions": 1,
+        "position_start": 11,
+        "type": "revolute",
+        "velocity_start": 10
+      },
+      {
+        "drake_joint_index": 8,
+        "name": "r_index_finger_mcp_abd",
+        "num_positions": 1,
+        "position_start": 12,
+        "type": "revolute",
+        "velocity_start": 11
+      },
+      {
+        "drake_joint_index": 9,
+        "name": "r_index_finger_pip",
+        "num_positions": 1,
+        "position_start": 13,
+        "type": "revolute",
+        "velocity_start": 12
+      },
+      {
+        "drake_joint_index": 10,
+        "name": "r_index_finger_dip",
+        "num_positions": 1,
+        "position_start": 14,
+        "type": "revolute",
+        "velocity_start": 13
+      },
+      {
+        "drake_joint_index": 11,
+        "name": "r_index_finger_tip_fixed",
+        "num_positions": 0,
+        "position_start": 15,
+        "type": "fixed",
+        "velocity_start": 14
+      },
+      {
+        "drake_joint_index": 12,
+        "name": "r_index_finger_tip_sensor_frame_fixed",
+        "num_positions": 0,
+        "position_start": 15,
+        "type": "fixed",
+        "velocity_start": 14
+      },
+      {
+        "drake_joint_index": 13,
+        "name": "r_middle_finger_mcp_flex",
+        "num_positions": 1,
+        "position_start": 15,
+        "type": "revolute",
+        "velocity_start": 14
+      },
+      {
+        "drake_joint_index": 14,
+        "name": "r_middle_finger_mcp_abd",
+        "num_positions": 1,
+        "position_start": 16,
+        "type": "revolute",
+        "velocity_start": 15
+      },
+      {
+        "drake_joint_index": 15,
+        "name": "r_middle_finger_pip",
+        "num_positions": 1,
+        "position_start": 17,
+        "type": "revolute",
+        "velocity_start": 16
+      },
+      {
+        "drake_joint_index": 16,
+        "name": "r_middle_finger_dip",
+        "num_positions": 1,
+        "position_start": 18,
+        "type": "revolute",
+        "velocity_start": 17
+      },
+      {
+        "drake_joint_index": 17,
+        "name": "r_middle_finger_tip_fixed",
+        "num_positions": 0,
+        "position_start": 19,
+        "type": "fixed",
+        "velocity_start": 18
+      },
+      {
+        "drake_joint_index": 18,
+        "name": "r_middle_finger_tip_sensor_frame_fixed",
+        "num_positions": 0,
+        "position_start": 19,
+        "type": "fixed",
+        "velocity_start": 18
+      },
+      {
+        "drake_joint_index": 19,
+        "name": "r_ring_finger_mcp_flex",
+        "num_positions": 1,
+        "position_start": 19,
+        "type": "revolute",
+        "velocity_start": 18
+      },
+      {
+        "drake_joint_index": 20,
+        "name": "r_ring_finger_mcp_abd",
+        "num_positions": 1,
+        "position_start": 20,
+        "type": "revolute",
+        "velocity_start": 19
+      },
+      {
+        "drake_joint_index": 21,
+        "name": "r_ring_finger_pip",
+        "num_positions": 1,
+        "position_start": 21,
+        "type": "revolute",
+        "velocity_start": 20
+      },
+      {
+        "drake_joint_index": 22,
+        "name": "r_ring_finger_dip",
+        "num_positions": 1,
+        "position_start": 22,
+        "type": "revolute",
+        "velocity_start": 21
+      },
+      {
+        "drake_joint_index": 23,
+        "name": "r_ring_finger_tip_fixed",
+        "num_positions": 0,
+        "position_start": 23,
+        "type": "fixed",
+        "velocity_start": 22
+      },
+      {
+        "drake_joint_index": 24,
+        "name": "r_ring_finger_tip_sensor_frame_fixed",
+        "num_positions": 0,
+        "position_start": 23,
+        "type": "fixed",
+        "velocity_start": 22
+      },
+      {
+        "drake_joint_index": 25,
+        "name": "r_pinky_mcp_flex",
+        "num_positions": 1,
+        "position_start": 23,
+        "type": "revolute",
+        "velocity_start": 22
+      },
+      {
+        "drake_joint_index": 26,
+        "name": "r_pinky_mcp_abd",
+        "num_positions": 1,
+        "position_start": 24,
+        "type": "revolute",
+        "velocity_start": 23
+      },
+      {
+        "drake_joint_index": 27,
+        "name": "r_pinky_pip",
+        "num_positions": 1,
+        "position_start": 25,
+        "type": "revolute",
+        "velocity_start": 24
+      },
+      {
+        "drake_joint_index": 28,
+        "name": "r_pinky_dip",
+        "num_positions": 1,
+        "position_start": 26,
+        "type": "revolute",
+        "velocity_start": 25
+      },
+      {
+        "drake_joint_index": 29,
+        "name": "r_pinky_tip_fixed",
+        "num_positions": 0,
+        "position_start": 27,
+        "type": "fixed",
+        "velocity_start": 26
+      },
+      {
+        "drake_joint_index": 30,
+        "name": "r_pinky_tip_sensor_frame_fixed",
+        "num_positions": 0,
+        "position_start": 27,
+        "type": "fixed",
+        "velocity_start": 26
+      },
+      {
+        "drake_joint_index": 31,
+        "name": "r_wrist_imu_frame_fixed",
+        "num_positions": 0,
+        "position_start": 27,
+        "type": "fixed",
+        "velocity_start": 26
+      }
+    ],
+    "nq": 27,
+    "nv": 26,
+    "root": "r_mount"
+  },
+  "generated_files_sha256": {
+    "meshes/collision/00_r_mount.obj": "76d65db6ba34eb7318c31a46d5ad9027c8c266378f2946d325f0c6ef56c84146",
+    "meshes/collision/01_r_wrist.obj": "4de207e98e5486a44a05af4b3ed91c369db4fa43e8c44ff05fb4dac794e901a1",
+    "meshes/collision/02_r_thumb_proximal.obj": "c23971f8a2c8fcda0edf04736cff8a2300f9d862571785696868229af3ceee2e",
+    "meshes/collision/03_r_thumb_proximal_abd.obj": "37d9946b2ee0db88441620064d04d3e32324524e27802a48474241730e30a2a5",
+    "meshes/collision/04_r_thumb_middle.obj": "cc7375ec11bd639ab8bb5a419045baacd24933de6af90f50e8deff0e67f3cc27",
+    "meshes/collision/05_r_thumb_distal.obj": "1b0cd0bc0205bf76ae8b9334c068aeaa221244168975d6d8e6148c1e87dff66d",
+    "meshes/collision/06_r_thumb_tip_sensor_frame.obj": "32cb3c76593cc90abe6e45857b111701880040564e85a24998ce372c3b4b46a5",
+    "meshes/collision/07_r_index_finger_proximal.obj": "ce15b70d452f89005b07a740851f978f892b6e7833d5add382bb34216b578e9b",
+    "meshes/collision/08_r_index_finger_proximal_abd.obj": "85252bab8ddcc9c16943d73246e5b971163dd835491b0e111d1134a38c3f31ec",
+    "meshes/collision/09_r_index_finger_middle.obj": "9a8c9580b78d3c93c62cd51dfa13d9065d8782e1676b8b4d0490742fbbfc8e5d",
+    "meshes/collision/10_r_index_finger_distal.obj": "c20b661f802894384f6415ee210cf813c0cc079e41d4f31e632803f0a2b02950",
+    "meshes/collision/11_r_index_finger_tip_sensor_frame.obj": "f1864cd8e412efb952e5d8397d1efb58f808e544afea93eacc69a9318794202c",
+    "meshes/collision/12_r_middle_finger_proximal.obj": "022a40b3244ff2c9e7e331c13e5392b490dc2eebc5522bb24d48ce0c871ede24",
+    "meshes/collision/13_r_middle_finger_proximal_abd.obj": "bd3d946edc6104cfe45417b3f73f383635c55bf6e097ba1ce724b93f5b89e4c2",
+    "meshes/collision/14_r_middle_finger_middle.obj": "80999e53875e41fb0f8f072076abe5bd6d5ce309ad12f71cc600f4f7a3ade845",
+    "meshes/collision/15_r_middle_finger_distal.obj": "c20b661f802894384f6415ee210cf813c0cc079e41d4f31e632803f0a2b02950",
+    "meshes/collision/16_r_middle_finger_tip_sensor_frame.obj": "f1864cd8e412efb952e5d8397d1efb58f808e544afea93eacc69a9318794202c",
+    "meshes/collision/17_r_ring_finger_proximal.obj": "c9eae8e1d127abf361485610d6f5b237dada7ecc475606ed7ee3d3f5a318dcdd",
+    "meshes/collision/18_r_ring_finger_proximal_abd.obj": "ff20bc11fb9bad77c6ce24cf40d5fdc80b4d0b4b30a3cc7ec9b2b607e19ad5b1",
+    "meshes/collision/19_r_ring_finger_middle.obj": "79c8eb7bce36843c54620e93f7c00ab1d73520874b6afa2efc8b4523e87719aa",
+    "meshes/collision/20_r_ring_finger_distal.obj": "c20b661f802894384f6415ee210cf813c0cc079e41d4f31e632803f0a2b02950",
+    "meshes/collision/21_r_ring_finger_tip_sensor_frame.obj": "f1864cd8e412efb952e5d8397d1efb58f808e544afea93eacc69a9318794202c",
+    "meshes/collision/22_r_pinky_proximal.obj": "f6d2bcddbe5fb0925a9eb9307210f6d1f811e0060bc1dbc96d71d4ec83ce5fc6",
+    "meshes/collision/23_r_pinky_proximal_abd.obj": "d4319167691cce18ee9d7e68adc4657c3e7b54154dc438b32fd1a8bebb8b311f",
+    "meshes/collision/24_r_pinky_middle.obj": "4bc8976979041c992fa06acfb6c378e5d829424ea86b1e834c17695af989545a",
+    "meshes/collision/25_r_pinky_distal.obj": "9d439307ac8df3296575b2a20369ffd931482c3bf7c5d7da0d1f5653ebb7db1b",
+    "meshes/collision/26_r_pinky_tip_sensor_frame.obj": "00cfad47d0231c5a2c8104453b2a2cc695a50a5543ac9b404db1eefc5216e25a",
+    "meshes/visual/00_r_mount.obj": "23b70a7fe30c95c1718d93ae4cfbf8991919fb6447c85a8893b1b349a9ef7c90",
+    "meshes/visual/01_r_wrist.obj": "aa82c381c0712683ebf29539deda1ed8d4fe1a26e4a50bd8cc5990c32f2eb8a4",
+    "meshes/visual/02_r_thumb_proximal.obj": "9daf879fd68d49e4471f7cfde3b56e86dc755e04e3b1518d2fa8ae35cd3273bb",
+    "meshes/visual/03_r_thumb_proximal_abd.obj": "f1f1335f93ae43c0e9ffee4432d1c79c8c7150eab23e571e284c990f507abdd0",
+    "meshes/visual/04_r_thumb_middle.obj": "3222ae96a87386e51bad60db2df198ca497d6b1610f6d61fe2e55b39a68c7a07",
+    "meshes/visual/05_r_thumb_distal.obj": "3430610d483e45895d189038bca8a38cead7c06c3bba820dda104ad762357e85",
+    "meshes/visual/06_r_thumb_tip_sensor_frame.obj": "8abaa0533fb83383000eba9720639977ab7476a4947664fab302796a14a8af5c",
+    "meshes/visual/07_r_index_finger_proximal.obj": "c9671f7122cc4fca82e50015b80ef26cda55e994011d2aeccf7cdedd43f570a6",
+    "meshes/visual/08_r_index_finger_proximal_abd.obj": "c2f763ebbd2260b8c3792a1d8e51d1c843d6b22a30c551f9be6105779213eea3",
+    "meshes/visual/09_r_index_finger_middle.obj": "a1db3065b5a1e31f2ed557ef162d33d32d2189c7319252830461a0a864177703",
+    "meshes/visual/10_r_index_finger_distal.obj": "491c87c9bc6bf84c340951eb66e9a9aa571a0e97fde5ac613c06969036b7e7ac",
+    "meshes/visual/11_r_index_finger_tip_sensor_frame.obj": "8e72dda3d86aadb329c5ff4e59af685e60552f41636c7e5af406066b1d37171d",
+    "meshes/visual/12_r_middle_finger_proximal.obj": "65973d908c1fc5f3da6df12df8cd6538c0409f22cd75ad0109c8f35cff34a117",
+    "meshes/visual/13_r_middle_finger_proximal_abd.obj": "3b0d6cf27456887ca01d24610fc482801c1de86096dc2ddb8ddad20977be68b1",
+    "meshes/visual/14_r_middle_finger_middle.obj": "d49fdc496dd6e47db13c4fc9c3d4c9c2b5e00ce7de4718a68b9bffc2f28727ee",
+    "meshes/visual/15_r_middle_finger_distal.obj": "491c87c9bc6bf84c340951eb66e9a9aa571a0e97fde5ac613c06969036b7e7ac",
+    "meshes/visual/16_r_middle_finger_tip_sensor_frame.obj": "8e72dda3d86aadb329c5ff4e59af685e60552f41636c7e5af406066b1d37171d",
+    "meshes/visual/17_r_ring_finger_proximal.obj": "09108f4fc97d9379488d98c629f15687592216d00d2baec8ee34d696c39635d7",
+    "meshes/visual/18_r_ring_finger_proximal_abd.obj": "eadd553994792a9b72d35855563925155ff99769ee520106d27171838dabfcbb",
+    "meshes/visual/19_r_ring_finger_middle.obj": "7f4063e3ab55ae1ad7eac53094eded889c33342f1452df7326634c05366fe83c",
+    "meshes/visual/20_r_ring_finger_distal.obj": "491c87c9bc6bf84c340951eb66e9a9aa571a0e97fde5ac613c06969036b7e7ac",
+    "meshes/visual/21_r_ring_finger_tip_sensor_frame.obj": "8e72dda3d86aadb329c5ff4e59af685e60552f41636c7e5af406066b1d37171d",
+    "meshes/visual/22_r_pinky_proximal.obj": "7897a38de985adec3fcefa1b5cf570eeccff9d06f66fbb85e01a6dba9b834c74",
+    "meshes/visual/23_r_pinky_proximal_abd.obj": "bd662a8b3d503fac029b561ac5e96bdacbf70731195f1747623c99eb9b8f3545",
+    "meshes/visual/24_r_pinky_middle.obj": "5868ff7004da0b143c3177b32dc63142e49266e9781a91261437b9d255c06fea",
+    "meshes/visual/25_r_pinky_distal.obj": "535af7b083aafc67ffeac5bd24871eca61ae4b3be030777eca5e97e3639f33a0",
+    "meshes/visual/26_r_pinky_tip_sensor_frame.obj": "5ba2af74d93e1b3b22fe8e52eeb5939890a92d862cc8296e3f571fed82add459",
+    "vendor_drake.urdf": "932e8f4c052c26ccc70b93756f8a888c42e41a576ea75de30be4db417d9d6a7f"
+  },
+  "geometry": [
+    {
+      "generated": "meshes/visual/00_r_mount.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_mount.STL"
+    },
+    {
+      "generated": "meshes/visual/01_r_wrist.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_wrist.STL"
+    },
+    {
+      "generated": "meshes/visual/02_r_thumb_proximal.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_thumb_proximal.STL"
+    },
+    {
+      "generated": "meshes/visual/03_r_thumb_proximal_abd.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_thumb_proximal_abd.STL"
+    },
+    {
+      "generated": "meshes/visual/04_r_thumb_middle.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_thumb_middle.STL"
+    },
+    {
+      "generated": "meshes/visual/05_r_thumb_distal.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_thumb_distal.STL"
+    },
+    {
+      "generated": "meshes/visual/06_r_thumb_tip_sensor_frame.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_thumb_tip_sensor_frame.STL"
+    },
+    {
+      "generated": "meshes/visual/07_r_index_finger_proximal.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_index_finger_proximal.STL"
+    },
+    {
+      "generated": "meshes/visual/08_r_index_finger_proximal_abd.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_index_finger_proximal_abd.STL"
+    },
+    {
+      "generated": "meshes/visual/09_r_index_finger_middle.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_index_finger_middle.STL"
+    },
+    {
+      "generated": "meshes/visual/10_r_index_finger_distal.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_index_finger_distal.STL"
+    },
+    {
+      "generated": "meshes/visual/11_r_index_finger_tip_sensor_frame.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_index_finger_tip_sensor_frame.STL"
+    },
+    {
+      "generated": "meshes/visual/12_r_middle_finger_proximal.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_middle_finger_proximal.STL"
+    },
+    {
+      "generated": "meshes/visual/13_r_middle_finger_proximal_abd.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_middle_finger_proximal_abd.STL"
+    },
+    {
+      "generated": "meshes/visual/14_r_middle_finger_middle.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_middle_finger_middle.STL"
+    },
+    {
+      "generated": "meshes/visual/15_r_middle_finger_distal.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_middle_finger_distal.STL"
+    },
+    {
+      "generated": "meshes/visual/16_r_middle_finger_tip_sensor_frame.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_middle_finger_tip_sensor_frame.STL"
+    },
+    {
+      "generated": "meshes/visual/17_r_ring_finger_proximal.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_ring_finger_proximal.STL"
+    },
+    {
+      "generated": "meshes/visual/18_r_ring_finger_proximal_abd.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_ring_finger_proximal_abd.STL"
+    },
+    {
+      "generated": "meshes/visual/19_r_ring_finger_middle.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_ring_finger_middle.STL"
+    },
+    {
+      "generated": "meshes/visual/20_r_ring_finger_distal.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_ring_finger_distal.STL"
+    },
+    {
+      "generated": "meshes/visual/21_r_ring_finger_tip_sensor_frame.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_ring_finger_tip_sensor_frame.STL"
+    },
+    {
+      "generated": "meshes/visual/22_r_pinky_proximal.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_pinky_proximal.STL"
+    },
+    {
+      "generated": "meshes/visual/23_r_pinky_proximal_abd.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_pinky_proximal_abd.STL"
+    },
+    {
+      "generated": "meshes/visual/24_r_pinky_middle.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_pinky_middle.STL"
+    },
+    {
+      "generated": "meshes/visual/25_r_pinky_distal.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_pinky_distal.STL"
+    },
+    {
+      "generated": "meshes/visual/26_r_pinky_tip_sensor_frame.obj",
+      "role": "visual",
+      "source": "hand2/hand2_2/body/meshes/right/r_pinky_tip_sensor_frame.STL"
+    },
+    {
+      "generated": "meshes/collision/00_r_mount.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_mount.STL"
+    },
+    {
+      "generated": "meshes/collision/01_r_wrist.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_wrist.STL"
+    },
+    {
+      "generated": "meshes/collision/02_r_thumb_proximal.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_thumb_proximal.STL"
+    },
+    {
+      "generated": "meshes/collision/03_r_thumb_proximal_abd.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_thumb_proximal_abd.STL"
+    },
+    {
+      "generated": "meshes/collision/04_r_thumb_middle.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_thumb_middle.STL"
+    },
+    {
+      "generated": "meshes/collision/05_r_thumb_distal.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_thumb_distal.STL"
+    },
+    {
+      "generated": "meshes/collision/06_r_thumb_tip_sensor_frame.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_thumb_tip_sensor_frame.STL"
+    },
+    {
+      "generated": "meshes/collision/07_r_index_finger_proximal.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_index_finger_proximal.STL"
+    },
+    {
+      "generated": "meshes/collision/08_r_index_finger_proximal_abd.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_index_finger_proximal_abd.STL"
+    },
+    {
+      "generated": "meshes/collision/09_r_index_finger_middle.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_index_finger_middle.STL"
+    },
+    {
+      "generated": "meshes/collision/10_r_index_finger_distal.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_index_finger_distal.STL"
+    },
+    {
+      "generated": "meshes/collision/11_r_index_finger_tip_sensor_frame.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_index_finger_tip_sensor_frame.STL"
+    },
+    {
+      "generated": "meshes/collision/12_r_middle_finger_proximal.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_middle_finger_proximal.STL"
+    },
+    {
+      "generated": "meshes/collision/13_r_middle_finger_proximal_abd.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_middle_finger_proximal_abd.STL"
+    },
+    {
+      "generated": "meshes/collision/14_r_middle_finger_middle.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_middle_finger_middle.STL"
+    },
+    {
+      "generated": "meshes/collision/15_r_middle_finger_distal.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_middle_finger_distal.STL"
+    },
+    {
+      "generated": "meshes/collision/16_r_middle_finger_tip_sensor_frame.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_middle_finger_tip_sensor_frame.STL"
+    },
+    {
+      "generated": "meshes/collision/17_r_ring_finger_proximal.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_ring_finger_proximal.STL"
+    },
+    {
+      "generated": "meshes/collision/18_r_ring_finger_proximal_abd.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_ring_finger_proximal_abd.STL"
+    },
+    {
+      "generated": "meshes/collision/19_r_ring_finger_middle.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_ring_finger_middle.STL"
+    },
+    {
+      "generated": "meshes/collision/20_r_ring_finger_distal.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_ring_finger_distal.STL"
+    },
+    {
+      "generated": "meshes/collision/21_r_ring_finger_tip_sensor_frame.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_ring_finger_tip_sensor_frame.STL"
+    },
+    {
+      "generated": "meshes/collision/22_r_pinky_proximal.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_pinky_proximal.STL"
+    },
+    {
+      "generated": "meshes/collision/23_r_pinky_proximal_abd.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_pinky_proximal_abd.STL"
+    },
+    {
+      "generated": "meshes/collision/24_r_pinky_middle.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_pinky_middle.STL"
+    },
+    {
+      "generated": "meshes/collision/25_r_pinky_distal.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_pinky_distal.STL"
+    },
+    {
+      "generated": "meshes/collision/26_r_pinky_tip_sensor_frame.obj",
+      "role": "collision",
+      "source": "hand2/hand2_2/body/meshes/right/r_pinky_tip_sensor_frame.STL"
+    }
+  ],
+  "missing": [
+    "human_wrist_calibration",
+    "anchors",
+    "controller"
+  ],
+  "model": "Hand2.2 RIGHT",
+  "model_pin": "829c9aa27cb12c3a49d5b8d63c9869dd8f656702",
+  "python_version": "3.10.12",
+  "source_files_sha256": {
+    "LICENSE": "38b27e3155e0c1c8d6f3e909e7a00359a302085dfd9ae963b52a91cbbe25afa3",
+    "hand2/hand2_2/body/meshes/right/r_index_finger_distal.STL": "7b11dd372a4a155e2bf1305c7d3cf0bacfbfd526f6659c467ccf35efd7553b7d",
+    "hand2/hand2_2/body/meshes/right/r_index_finger_middle.STL": "9ba4bd6449d5c60255c1bbe1cdf3ec1bd7f9f0413f45f9ee20ca1e97165b5a93",
+    "hand2/hand2_2/body/meshes/right/r_index_finger_proximal.STL": "d07ffb4a0f107d53837b068ee3aafd30b58a2775271beabc26911ac8d4288ef3",
+    "hand2/hand2_2/body/meshes/right/r_index_finger_proximal_abd.STL": "373722f52678f818a311d7c5a4ec6ac711038cfbf36536c082325f9315853cb5",
+    "hand2/hand2_2/body/meshes/right/r_index_finger_tip_sensor_frame.STL": "d5a13c52478576aa461d9739957bcf4612b359be58e449bb199a9ad01cb75cb6",
+    "hand2/hand2_2/body/meshes/right/r_middle_finger_distal.STL": "7b11dd372a4a155e2bf1305c7d3cf0bacfbfd526f6659c467ccf35efd7553b7d",
+    "hand2/hand2_2/body/meshes/right/r_middle_finger_middle.STL": "5f88e7c641888fdc7fbae7c3b613b691b8ae4fc35af473b2daf40bead9198178",
+    "hand2/hand2_2/body/meshes/right/r_middle_finger_proximal.STL": "039bee058e2e24fa083c77c7512d30782aecced1654897c6b9fd7b3b68866f6c",
+    "hand2/hand2_2/body/meshes/right/r_middle_finger_proximal_abd.STL": "91e3f149f9cabc198b903881661db428fa17860af7f79b5f0a4e8ff555616d6e",
+    "hand2/hand2_2/body/meshes/right/r_middle_finger_tip_sensor_frame.STL": "d5a13c52478576aa461d9739957bcf4612b359be58e449bb199a9ad01cb75cb6",
+    "hand2/hand2_2/body/meshes/right/r_mount.STL": "302c1a168417f2c84abc30a148ff6ce364ce6621340f15190c8f53cfe50d6268",
+    "hand2/hand2_2/body/meshes/right/r_pinky_distal.STL": "6832e7482d550cec79298ac1c1a304fcfc64ce0e3c925948d04e62a6242b9dae",
+    "hand2/hand2_2/body/meshes/right/r_pinky_middle.STL": "609cc6cef5df1bd4a92ec8a889c670643a45f8fc559d124622b96ebc77f76122",
+    "hand2/hand2_2/body/meshes/right/r_pinky_proximal.STL": "c88defaf8c670dc4a12a489e653ee4732a79a32780046dbe3fe6d98d1a686680",
+    "hand2/hand2_2/body/meshes/right/r_pinky_proximal_abd.STL": "0d9493bc1a62162c89a1be7673d8d91ebc9f20383847d66e46ac35a3645f9701",
+    "hand2/hand2_2/body/meshes/right/r_pinky_tip_sensor_frame.STL": "22f19f242d73f10231f420ce91ef5ba4dd6d53d2b9c7a15e68b5da0ba1f7a359",
+    "hand2/hand2_2/body/meshes/right/r_ring_finger_distal.STL": "7b11dd372a4a155e2bf1305c7d3cf0bacfbfd526f6659c467ccf35efd7553b7d",
+    "hand2/hand2_2/body/meshes/right/r_ring_finger_middle.STL": "6fbcf92b159a2d9e3b097f459ac5df73577cda5ca2b62020284de287f49323e4",
+    "hand2/hand2_2/body/meshes/right/r_ring_finger_proximal.STL": "da1870bfe85621550c6081c944b91e4dafc7721a73f46be6a77f0c15dd0b214a",
+    "hand2/hand2_2/body/meshes/right/r_ring_finger_proximal_abd.STL": "df3787ff168f4c0fa21c77296fe34418240e8c8d357c1ede99c96cf2f89d32f0",
+    "hand2/hand2_2/body/meshes/right/r_ring_finger_tip_sensor_frame.STL": "d5a13c52478576aa461d9739957bcf4612b359be58e449bb199a9ad01cb75cb6",
+    "hand2/hand2_2/body/meshes/right/r_thumb_distal.STL": "273878b0f78e35ffd5e3ad416cb4c79368c6fc43a886ec047760c5f21a55b04d",
+    "hand2/hand2_2/body/meshes/right/r_thumb_middle.STL": "a04ebd10f24534121672721011c95d26a0c8f734ee65481c49b962fd0b573ea7",
+    "hand2/hand2_2/body/meshes/right/r_thumb_proximal.STL": "e3e9e7c1266c6d3e38287b074e38162bf508626de14d54e995e40e1d56d7247e",
+    "hand2/hand2_2/body/meshes/right/r_thumb_proximal_abd.STL": "2aaafd9ba420bf2b40d2e262f8328ba4937e647021a0ea188aa3620bde0d135a",
+    "hand2/hand2_2/body/meshes/right/r_thumb_tip_sensor_frame.STL": "4bb06fa7ee605b72a21f62debe43fe711e57da3fcc45c89ab2644ee476b0a4af",
+    "hand2/hand2_2/body/meshes/right/r_wrist.STL": "ece3f36af8ed61079d0061dd9d9b11e5eae76ce9640287d0975c1522f8731fc6",
+    "hand2/hand2_2/body/mjcf/right.xml": "c11ab34b0fd0c1d520d108ffdefe45bfc05711bb2e97946a6bda96888cf02847",
+    "hand2/hand2_2/body/urdf/right.urdf": "9ad34330b2fd30b4d4d192ecd4d8a52e80fa266c938d0d51e9fe454267c42d86"
+  },
+  "source_input_count": 30,
+  "status": "preparatory",
+  "vendor_license": {
+    "source": "LICENSE",
+    "text": "MIT License\n\nCopyright (c) 2025 Wuji Technology\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+  },
+  "vendor_mjcf_exclusions": {
+    "application": "metadata_only",
+    "applied": false,
+    "pairs": [
+      {
+        "body1": "r_thumb_proximal",
+        "body2": "r_wrist"
+      },
+      {
+        "body1": "r_thumb_proximal_abd",
+        "body2": "r_wrist"
+      },
+      {
+        "body1": "r_index_finger_proximal",
+        "body2": "r_wrist"
+      },
+      {
+        "body1": "r_index_finger_proximal_abd",
+        "body2": "r_wrist"
+      },
+      {
+        "body1": "r_middle_finger_proximal",
+        "body2": "r_wrist"
+      },
+      {
+        "body1": "r_middle_finger_proximal_abd",
+        "body2": "r_wrist"
+      },
+      {
+        "body1": "r_ring_finger_proximal",
+        "body2": "r_wrist"
+      },
+      {
+        "body1": "r_ring_finger_proximal_abd",
+        "body2": "r_wrist"
+      },
+      {
+        "body1": "r_pinky_proximal",
+        "body2": "r_wrist"
+      },
+      {
+        "body1": "r_pinky_proximal_abd",
+        "body2": "r_wrist"
+      },
+      {
+        "body1": "r_index_finger_distal",
+        "body2": "r_index_finger_tip_sensor_frame"
+      },
+      {
+        "body1": "r_middle_finger_distal",
+        "body2": "r_middle_finger_tip_sensor_frame"
+      },
+      {
+        "body1": "r_pinky_distal",
+        "body2": "r_pinky_tip_sensor_frame"
+      },
+      {
+        "body1": "r_ring_finger_distal",
+        "body2": "r_ring_finger_tip_sensor_frame"
+      },
+      {
+        "body1": "r_thumb_distal",
+        "body2": "r_thumb_tip_sensor_frame"
+      }
+    ]
+  }
+}
