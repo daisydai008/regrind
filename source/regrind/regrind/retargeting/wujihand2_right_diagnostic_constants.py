@@ -4,10 +4,13 @@ Body origins are used directly, including actual tips (not distal-origin pads).
 The native floating r_mount and vendor joint ordering are never rewritten.
 """
 import hashlib
+import itertools
 import json
 from pathlib import Path
+import xml.etree.ElementTree as ET
 
 ROBOT_NAME = "wujihand2_right_diagnostic"
+PARENT_WELD_ROBOT_NAME = "wujihand2_right_diagnostic_parent_weld"
 ROBOT_DOF = 20
 MODEL_PIN = "829c9aa27cb12c3a49d5b8d63c9869dd8f656702"
 ASSET_DIR = Path(__file__).resolve().parents[1] / "assets/hand2_2_right"
@@ -72,6 +75,84 @@ def setup_collision_exclusions(plant, scene_graph):
         if not all(geometries):
             raise ValueError(f"Missing source exclusion collision geometry: {pair}")
         declaration.ExcludeBetween(*(GeometrySet(ids) for ids in geometries))
+    scene_graph.collision_filter_manager().Apply(declaration)
+
+
+# Pin the effective delta against Drake defaults + vendor15, not observed contacts.
+EXPECTED_PARENT_WELD_DELTA = sorted(
+    [tuple(sorted(("r_mount", f"r_{finger}_proximal"))) for finger in FINGERS]
+    + [(f"r_{finger}_middle", f"r_{finger}_tip_sensor_frame") for finger in FINGERS]
+)
+
+
+def derive_parent_weld_pairs(root=None):
+    """Derive collision-body pairs from the pinned URDF's fixed-link components.
+
+    Articulated edges join adjacent components. No world component is introduced:
+    r_mount is floating, so MuJoCo's world-weld exemption does not apply here.
+    An optional XML root permits malformed-graph tests without asset writes.
+    """
+    if root is None:
+        root = ET.parse(ROBOT_URDF).getroot()
+    links = root.findall("link")
+    names = {link.attrib["name"] for link in links}
+    if len(names) != len(links) or "r_mount" not in names:
+        raise ValueError("Duplicate links or unknown root in Hand2 topology")
+    parent = {}
+    for joint in root.findall("joint"):
+        a, b = (joint.find(k).attrib["link"] for k in ("parent", "child"))
+        kind = joint.attrib["type"]
+        if a not in names or b not in names or b in parent or kind not in ("fixed", "revolute"):
+            raise ValueError("Unknown link, duplicate parent, or unsupported joint in Hand2 topology")
+        parent[b] = (a, kind)
+    components, active = {}, set()
+    def component(name):
+        if name in active:
+            raise ValueError("Cycle in Hand2 topology")
+        if name not in components:
+            active.add(name)
+            if name not in parent:
+                if name != "r_mount":
+                    raise ValueError("Unknown root in Hand2 topology")
+                components[name] = name
+            else:
+                ancestor, kind = parent[name]
+                ancestor_component = component(ancestor)
+                components[name] = ancestor_component if kind == "fixed" else name
+            active.remove(name)
+        return components[name]
+    for name in names:
+        component(name)
+    if "r_mount" in parent:
+        raise ValueError("Hand2 r_mount must be the sole root")
+    adjacent = {frozenset((components[a], components[b]))
+                for b, (a, kind) in parent.items() if kind != "fixed"}
+    collision_names = sorted(link.attrib["name"] for link in links if link.findall("collision"))
+    return [(a, b) for a, b in itertools.combinations(collision_names, 2)
+            if components[a] == components[b]
+            or frozenset((components[a], components[b])) in adjacent]
+
+
+def setup_parent_weld_collision_exclusions(plant, scene_graph):
+    """Opt-in vendor15 plus MuJoCo parent/weld semantics, robot bodies only.
+
+    create_plant finalizes AFTER callbacks; Drake defaults are not present yet.
+    Redundant topology exclusions are idempotent. Precheck/tests validate the
+    effective ten-pair delta against the finalized vendor15 SceneGraph mask.
+    """
+    from pydrake.geometry import CollisionFilterDeclaration, GeometrySet
+
+    validate_asset()
+    pairs = derive_parent_weld_pairs()
+    robot = plant.GetBodyByName("r_mount").model_instance()
+    declaration = CollisionFilterDeclaration()
+    for a, b in pairs:
+        bodies = [plant.GetBodyByName(name, robot) for name in (a, b)]
+        geometries = [plant.GetCollisionGeometriesForBody(body) for body in bodies]
+        if not all(geometries):
+            raise ValueError(f"Missing topology collision geometry: {(a, b)}")
+        declaration.ExcludeBetween(*(GeometrySet(ids) for ids in geometries))
+    setup_collision_exclusions(plant, scene_graph)
     scene_graph.collision_filter_manager().Apply(declaration)
 
 

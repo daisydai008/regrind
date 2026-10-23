@@ -51,10 +51,16 @@ def _robot_resources(robot_name: str):
         )
 
         return MANO_JOINTS, ROBOT_DOF, setup_collision_exclusions
+    if robot_name == "wujihand2_right_diagnostic_parent_weld":
+        from regrind.retargeting.wujihand2_right_diagnostic_constants import (
+            MANO_JOINTS, ROBOT_DOF, setup_parent_weld_collision_exclusions,
+        )
+
+        return MANO_JOINTS, ROBOT_DOF, setup_parent_weld_collision_exclusions
     raise ValueError(
         f"Unknown robot_name {robot_name!r}; expected one of "
         "'leaphand', 'leaphand_left', 'wujihand', 'wujihand_left', "
-        "'wujihand2_right_diagnostic'."
+        "'wujihand2_right_diagnostic', 'wujihand2_right_diagnostic_parent_weld'."
     )
 
 
