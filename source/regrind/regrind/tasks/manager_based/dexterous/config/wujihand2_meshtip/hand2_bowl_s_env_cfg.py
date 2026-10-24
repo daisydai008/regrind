@@ -66,3 +66,24 @@ class Hand2BowlMeshTipWristV3SEnvCfg(Hand2BowlMeshTipWristV2SEnvCfg):
 @configclass
 class Hand2BowlMeshTipWristV3SEnvCfg_PLAY(Hand2BowlMeshTipWristV3SEnvCfg):
     """Same v3 physics and guards; no Play-only relaxation."""
+
+
+@configclass
+class Hand2BowlMeshTipFingerV4SEnvCfg(Hand2BowlMeshTipWristV3SEnvCfg):
+    """Deterministic residual-range hypothesis on the finger action mapping only.
+
+    Not an official drive-gain change: joint_pos.scale is tripled to 0.32 rad.
+    Official drives, gains, caps, limits, root controller, reference table,
+    rewards and all 26-dim terms are untouched. The normalized action penalty
+    stays identical, so the same physical delta now has a different penalty
+    effect.
+    """
+
+    def __post_init__(self):
+        super().__post_init__()
+        self.actions.joint_pos.scale *= 3.0
+
+
+@configclass
+class Hand2BowlMeshTipFingerV4SEnvCfg_PLAY(Hand2BowlMeshTipFingerV4SEnvCfg):
+    """Same v4 finger range and physics; no Play-only relaxation."""
