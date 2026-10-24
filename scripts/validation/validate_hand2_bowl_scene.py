@@ -35,6 +35,115 @@ def save_summary(path, report):
         os.fsync(stream.fileno())
 
 
+def transform_mesh_points(points, mesh_to_world, bottom_to_world):
+    """Gf matrices use row vectors; remove ALL parent/env/root transforms."""
+    import numpy as np
+
+    points = np.asarray(points, dtype=np.float64)
+    mesh = np.asarray(mesh_to_world, dtype=np.float64)
+    bottom = np.asarray(bottom_to_world, dtype=np.float64)
+    if (points.ndim != 2 or points.shape[1:] != (3,) or len(points) < 4
+            or mesh.shape != (4, 4) or bottom.shape != (4, 4)
+            or not all(np.isfinite(a).all() for a in (points, mesh, bottom))):
+        raise ValueError("Invalid collider points/transforms")
+    local = np.column_stack((points, np.ones(len(points)))) @ mesh @ np.linalg.inv(bottom)
+    if not np.isfinite(local).all() or not np.allclose(local[:, 3], 1, rtol=0, atol=1e-12):
+        raise ValueError("Non-affine collider transform")
+    return local[:, :3]
+
+
+def vertex_set_error(actual, expected, atol=1e-6):
+    """Unordered unique positions with a one-to-one distance match, no SciPy."""
+    import numpy as np
+
+    actual, expected = (np.asarray(v, dtype=np.float64) for v in (actual, expected))
+    if any(v.ndim != 2 or v.shape[1:] != (3,) or not len(v) or not np.isfinite(v).all()
+           for v in (actual, expected)):
+        raise ValueError("Invalid vertex set")
+    actual, expected = (np.unique(v, axis=0) for v in (actual, expected))
+    if actual.shape != expected.shape:
+        return None
+    distances = np.linalg.norm(actual[:, None, :] - expected[None, :, :], axis=-1)
+    nearest = distances.argmin(axis=1)
+    errors = distances[np.arange(len(actual)), nearest]
+    if len(set(nearest.tolist())) != len(expected) or np.max(errors) > atol:
+        return None
+    return float(np.max(errors))
+
+
+def audit_collision_geometry(stage, directory, roots):
+    """Audit USD INPUT convex hulls, not inaccessible PhysX cooked hull vertices."""
+    from pxr import Usd, UsdGeom, UsdPhysics, UsdShade
+
+    publisher = load_module("hand2_bowl_asset_audit", WORKSPACE / "scripts/tactidex_import/assets/publish_hand2_bowl_asset.py")
+    manifest = publisher.validate_publication(directory)
+    expected = publisher.collision_geometry(directory)
+    cache = UsdGeom.XformCache(Usd.TimeCode.Default())
+    environments = []
+    for root_path in roots:
+        root = stage.GetPrimAtPath(root_path)
+        bottom = stage.GetPrimAtPath(root_path + "/bottom")
+        if not root.IsValid() or not bottom.IsValid():
+            raise ValueError(f"Missing Bowl bottom: {root_path}")
+        matches, meshes = set(), []
+        # Unlike stage.Traverse(), this visits importer-created instance proxies.
+        for prim in Usd.PrimRange(root, Usd.TraverseInstanceProxies()):
+            if not prim.HasAPI(UsdPhysics.CollisionAPI):
+                continue
+            if not prim.GetPath().HasPrefix(bottom.GetPath()):
+                raise ValueError(f"Unexpected non-bottom Bowl collider: {prim.GetPath()}")
+            descendants = list(Usd.PrimRange(prim, Usd.TraverseInstanceProxies()))
+            geometry = [p for p in descendants if p.IsA(UsdGeom.Mesh)]
+            if (len(geometry) != 1 or any(p != prim and
+                    (p.HasAPI(UsdPhysics.CollisionAPI) or p.HasAPI(UsdPhysics.RigidBodyAPI))
+                    for p in descendants)):
+                raise ValueError(f"Expected one mesh and no nested physics owner: {prim.GetPath()}")
+            mesh_prim = geometry[0]
+            enabled = UsdPhysics.CollisionAPI(prim).GetCollisionEnabledAttr().Get()
+            if enabled is not True:  # Includes schema default True, not just authored values.
+                raise ValueError(f"Disabled Bowl collision: {prim.GetPath()}")
+            if not prim.HasAPI(UsdPhysics.MeshCollisionAPI):
+                raise ValueError(f"Missing mesh collision policy: {prim.GetPath()}")
+            approximation = UsdPhysics.MeshCollisionAPI(prim).GetApproximationAttr().Get()
+            if approximation != UsdPhysics.Tokens.convexHull:
+                raise ValueError(f"Expected convexHull, no further decomposition: {prim.GetPath()}: {approximation}")
+            points = transform_mesh_points(UsdGeom.Mesh(mesh_prim).GetPointsAttr().Get(),
+                                           cache.GetLocalToWorldTransform(mesh_prim), cache.GetLocalToWorldTransform(bottom))
+            candidates = [(name, vertex_set_error(points, vertices)) for name, vertices in expected.items()]
+            candidates = [(name, error) for name, error in candidates if error is not None]
+            if len(candidates) != 1 or candidates[0][0] in matches:
+                raise ValueError(f"Wrong/duplicate/ambiguous Bowl geometry: {prim.GetPath()}")
+            name, error = candidates[0]
+            matches.add(name)
+            material_info = {"status": "no_bound_physics_material_USD_defaults_not_resolved"}
+            try:
+                material, _ = UsdShade.MaterialBindingAPI(prim).ComputeBoundMaterial(materialPurpose="physics")
+                if material:
+                    api = UsdPhysics.MaterialAPI(material.GetPrim())
+                    material_info = {"status": "USD_bound_material_not_PhysX_effective_contact",
+                                     "path": str(material.GetPath()),
+                                     "static_friction": api.GetStaticFrictionAttr().Get(),
+                                     "dynamic_friction": api.GetDynamicFrictionAttr().Get(),
+                                     "restitution": api.GetRestitutionAttr().Get()}
+            except RuntimeError as error_material:
+                material_info = {"status": "unavailable", "reason": str(error_material)}
+            meshes.append({"prim_path": str(prim.GetPath()), "mesh_prim_path": str(mesh_prim.GetPath()), "source_piece": name,
+                           "approximation": str(approximation), "collision_enabled": enabled,
+                           "max_vertex_error_m": error, "instance_proxy": prim.IsInstanceProxy(),
+                           "material": material_info})
+        if len(meshes) != 10 or matches != set(expected):
+            raise ValueError(f"Expected a bijection of ten Bowl colliders: {root_path}")
+        environments.append({"root": root_path, "collision_count": len(meshes), "meshes": meshes})
+    if not environments or len(set(roots)) != len(environments):
+        raise ValueError("Expected distinct environment roots")
+    return {"status": "USD_input_hull_geometry_verified", "atol_m": 1e-6,
+            "agreement_scope": manifest["agreement_scope"], "physics_contact_equivalence": False,
+            "physx_internal_cooked_hull_vertices": "unmeasured",
+            "manifest_sha256": publisher.sha256(Path(directory) / "manifest.json"),
+            "payload_sha256": manifest["payload_sha256"], "input_mass_kg": manifest["mass_kg"],
+            "environments": environments}
+
+
 def run_scene(gym_env, data_dir, report, writer):
     # All simulator/runtime imports follow AppLauncher creation in main().
     import h5py
@@ -43,7 +152,7 @@ def run_scene(gym_env, data_dir, report, writer):
     import omni.usd
     from PIL import Image, ImageDraw
     from isaaclab.utils.math import quat_error_magnitude
-    from regrind.robots.free_hand2_right_hand import contract, inspect_collision_filters
+    from regrind.robots.free_hand2_right_hand import contract, inspect_collision_filters, check_runtime_masses
     from regrind.tasks.manager_based.dexterous.config.wujihand2.hand2_bowl_s_env_cfg import (
         CONTROLLER_HYPOTHESIS, PAD_BODIES, TABLE_SENSOR_NAMES, TIP_BODIES,
     )
@@ -83,6 +192,25 @@ def run_scene(gym_env, data_dir, report, writer):
     if abs(table_top - 0.012) > 1e-12:
         raise ValueError("Table geometry changed")
     stage = omni.usd.get_context().get_stage()
+    asset_path = Path(env.cfg.scene.object.spawn.asset_path)
+    report["collision_geometry_audit"] = audit_collision_geometry(
+        stage, asset_path.parent, [f"/World/envs/env_{i}/Object" for i in range(2)])
+    audit = report["collision_geometry_audit"]
+    mass_props = env.cfg.scene.object.spawn.mass_props
+    config_mass = mass_props.mass if mass_props is not None else None
+    if config_mass is not None and abs(config_mass - 0.3) > 1e-8:
+        raise ValueError("Bowl config mass differs from 0.3 kg source")
+    if env.cfg.scene.object.spawn.collider_type != "convex_hull":
+        raise ValueError("Bowl importer must use convex_hull")
+    audit["configured_mass_kg"] = config_mass
+    audit["configured_mass_source"] = "URDF" if config_mass is None else "mass_props"
+    actual_mass = obj.data.default_mass.detach().cpu().numpy()
+    if actual_mass.size != 2 or not np.isfinite(actual_mass).all() or not np.allclose(actual_mass, 0.3, rtol=0, atol=1e-6):
+        raise ValueError("Actual Bowl default mass differs from 0.3 kg")
+    audit["actual_default_mass_kg"] = actual_mass.tolist()
+    report["hand_body_mass_guard"] = {"verification_state": "not_verified"}
+    report["hand_body_mass_guard"] = check_runtime_masses(robot)
+    # Mass verification is not controller calibration or a contact/dynamics pass.
     filters = []
     for index in range(2):
         root = f"/World/envs/env_{index}/Robot"
@@ -308,6 +436,10 @@ def main(argv=None):
         report["source_hashes"] = {s["relative_path"]: s["sha256"] for s in manifest["sources"]}
         report["runtime_data_hashes"] = manifest["output_sha256"]
         report["manifest_sha256"] = publisher.sha256(data_dir / "manifest.json")
+        asset_publisher = load_module("hand2_bowl_asset_publisher", WORKSPACE / "scripts/tactidex_import/assets/publish_hand2_bowl_asset.py")
+        asset_publisher.validate_publication()
+        report["collision_geometry_audit"] = {"status": "publication_verified_stage_audit_pending",
+            "manifest_sha256": asset_publisher.sha256(asset_publisher.OUTPUT / "manifest.json")}
         os.environ["HAND2_USD_CACHE_DIR"] = str(output / "usd_cache")
         os.environ["HAND2_NUM_ENVS"] = str(args.num_envs)
         os.environ["REGRIND_DATA_DIR"] = str(REPO / "data")

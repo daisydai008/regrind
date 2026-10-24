@@ -1,6 +1,7 @@
 """Isolated floating Hand2 RIGHT configuration; not a task or training asset."""
 import importlib.util
 import json
+import math
 from pathlib import Path
 import re
 import xml.etree.ElementTree as ET
@@ -9,6 +10,132 @@ _spec = importlib.util.spec_from_file_location(
     "hand2_right_contract", Path(__file__).with_name("hand2_right_contract.py"))
 contract = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(contract)
+
+
+QUERY_FRAME_NAMES = tuple(f"r_{finger}_tip" for finger in
+                          ("thumb", "index_finger", "middle_finger", "ring_finger", "pinky")) + ("r_wrist_imu_frame",)
+QUERY_FRAME_MASS_KG = 1e-7
+QUERY_FRAME_DIAGONAL_INERTIA = (1e-7, 1e-7, 1e-7)
+QUERY_FRAME_SOURCE_USD = "hand2/hand2_2/body/usd/right/wujihand2_2.usd"
+QUERY_FRAME_SOURCE_SHA256 = "ea9e12d7f0d96f33b91c95e193c87ecea91cbe71f2deabe5c135c1d77f52aa3f"
+PLACEHOLDER_WARNING = "Official vendor numerical placeholders, not measured physical-link mass/inertia; not controller calibration."
+
+
+def expected_mass_contract():
+    """Derive physical masses from the pinned local URDF; no vendor/runtime import."""
+    contract.validate_asset()
+    root = ET.parse(contract.C.ROBOT_URDF).getroot()
+    links = root.findall("link")
+    names = [link.get("name") for link in links]
+    if len(names) != 33 or len(set(names)) != 33:
+        raise ValueError("Expected exactly 33 unique Hand2 links")
+    physical, frames = {}, {}
+    for link in links:
+        name = link.get("name")
+        if name in QUERY_FRAME_NAMES:
+            if any(link.find(tag) is not None for tag in ("inertial", "visual", "collision")):
+                raise ValueError(f"Query frame is not massless/geometry-free in pinned URDF: {name}")
+            parents = [j for j in root.findall("joint") if j.find("child").get("link") == name]
+            if (len(parents) != 1 or parents[0].get("type") != "fixed"
+                    or parents[0].find("parent").get("link") not in set(names) - set(QUERY_FRAME_NAMES)):
+                raise ValueError(f"Query frame must have one fixed physical parent: {name}")
+            frames[name] = QUERY_FRAME_MASS_KG
+        else:
+            mass = link.find("inertial/mass")
+            value = float(mass.get("value")) if mass is not None else 0.0
+            if not math.isfinite(value) or value <= 0:
+                raise ValueError(f"Missing positive physical mass: {name}")
+            physical[name] = value
+    if set(frames) != set(QUERY_FRAME_NAMES) or len(physical) != 27:
+        raise ValueError("Expected exactly 27 physical links and six query frames")
+    if not math.isclose(math.fsum(physical.values()), 0.6878, rel_tol=0, abs_tol=1e-12):
+        raise ValueError("Pinned physical mass sum changed")
+    return {"physical_mass_kg": physical, "query_frame_mass_kg": frames,
+            "expected_total_mass_kg": math.fsum([*physical.values(), *frames.values()]),
+            "placeholder_diagonal_inertia": list(QUERY_FRAME_DIAGONAL_INERTIA),
+            "source": {"label": "official_vendor_pin", "model_pin": contract.C.MODEL_PIN,
+                       "usd_path": QUERY_FRAME_SOURCE_USD, "usd_sha256": QUERY_FRAME_SOURCE_SHA256},
+            "placeholder_warning": PLACEHOLDER_WARNING}
+
+
+def apply_query_frame_mass_defaults(stage, prim_path, usd_modules=None):
+    """Before reset, author only the six nonphysical frames, never sensor pads."""
+    expected = expected_mass_contract()  # Fail before any USD authoring.
+    contract.robot_path(prim_path)
+    if usd_modules is None:
+        from pxr import Usd, UsdPhysics, Gf
+    else:
+        Usd, UsdPhysics, Gf = usd_modules
+    root = stage.GetPrimAtPath(prim_path)
+    if not root.IsValid() or root.IsInstance() or root.IsInstanceProxy():
+        raise ValueError(f"Missing/instance Robot: {prim_path}")
+    prims = list(Usd.PrimRange(root, Usd.TraverseInstanceProxies()))
+    frames = {}
+    for name in QUERY_FRAME_NAMES:
+        matches = [p for p in prims if p.GetName() == name]
+        if len(matches) != 1:
+            raise ValueError(f"Missing/duplicate query frame: {name}")
+        prim = matches[0]
+        path = str(prim.GetPath())
+        if (not path.startswith(prim_path + "/") or prim.IsInstance() or prim.IsInstanceProxy()
+                or not prim.HasAPI(UsdPhysics.RigidBodyAPI)):
+            raise ValueError(f"Query frame is not an editable own-robot rigid body: {path}")
+        ancestor = prim.GetParent()
+        while ancestor.IsValid() and ancestor != root:
+            if ancestor.HasAPI(UsdPhysics.RigidBodyAPI) or ancestor.IsInstance() or ancestor.IsInstanceProxy():
+                raise ValueError(f"Nested/instance query frame rejected: {path}")
+            ancestor = ancestor.GetParent()
+        if ancestor != root:
+            raise ValueError(f"Query frame outside Robot: {path}")
+        for child in Usd.PrimRange(prim, Usd.TraverseInstanceProxies()):
+            if child.HasAPI(UsdPhysics.CollisionAPI) or (child != prim and child.HasAPI(UsdPhysics.RigidBodyAPI)):
+                raise ValueError(f"Physical geometry/nested body on query frame: {path}")
+        if prim.HasAPI(UsdPhysics.MassAPI):
+            mass = UsdPhysics.MassAPI(prim).GetMassAttr().Get()
+            if mass is not None and not any(math.isclose(mass, v, rel_tol=0, abs_tol=5e-12)
+                                            for v in (0.0, 1.0, QUERY_FRAME_MASS_KG)):
+                raise ValueError(f"Unexpected existing physical mass on query frame: {path}: {mass}")
+        frames[name] = prim
+    records = {}
+    for name, prim in frames.items():
+        api = UsdPhysics.MassAPI.Apply(prim)
+        if not api or not api.CreateMassAttr().Set(QUERY_FRAME_MASS_KG):
+            raise RuntimeError(f"Cannot author query-frame mass: {name}")
+        if not api.CreateDiagonalInertiaAttr().Set(Gf.Vec3f(*QUERY_FRAME_DIAGONAL_INERTIA)):
+            raise RuntimeError(f"Cannot author query-frame inertia: {name}")
+        records[name] = {"prim_path": str(prim.GetPath()), "mass_kg": api.GetMassAttr().Get(),
+                         "diagonal_inertia": list(api.GetDiagonalInertiaAttr().Get())}
+    return {"frames": records, "source": expected["source"], "placeholder_warning": PLACEHOLDER_WARNING}
+
+
+def check_runtime_masses(robot):
+    """Check live PhysX masses in every environment, not cached default_mass."""
+    expected = expected_mass_contract()
+    masses = {**expected["physical_mass_kg"], **expected["query_frame_mass_kg"]}
+    names = list(robot.body_names)
+    if len(names) != 33 or len(set(names)) != 33 or set(names) != set(masses):
+        raise ValueError("Actual PhysX body names must match all 33 unique Hand2 links")
+    if not hasattr(robot.root_physx_view, "get_masses"):
+        raise RuntimeError("Required live PhysX get_masses unavailable")
+    tensor = robot.root_physx_view.get_masses()
+    if tuple(tensor.shape) != (robot.num_instances, 33) or robot.num_instances < 1:
+        raise ValueError(f"Unexpected live PhysX mass tensor shape: {tensor.shape}")
+    rows = tensor.detach().cpu().tolist()
+    records, totals = [], []
+    for env_index, row in enumerate(rows):
+        for name, value in zip(names, row):
+            placeholder = name in expected["query_frame_mass_kg"]
+            if (not math.isfinite(value) or value <= 0
+                    or not math.isclose(value, masses[name], rel_tol=0 if placeholder else 1e-5,
+                                        abs_tol=5e-12 if placeholder else 1e-8)):
+                raise ValueError(f"Actual PhysX mass mismatch: env={env_index} {name}: {value} != {masses[name]}")
+        total = math.fsum(row)
+        if not math.isclose(total, 0.6878006, rel_tol=0, abs_tol=1e-6):
+            raise ValueError(f"Actual PhysX total mass mismatch: env={env_index}: {total}")
+        records.append(dict(zip(names, row)))
+        totals.append(total)
+    return {"verification_state": "passed", "evidence": "live_root_physx_view.get_masses",
+            "body_mass_kg_per_env": records, "total_mass_kg_per_env": totals, **expected}
 
 
 def _resolve_collision_links(stage, prim_path, Usd, UsdPhysics):
@@ -172,6 +299,7 @@ def spawn_hand2_right(prim_path, cfg, translation=None, orientation=None, **kwar
     import_cfg = cfg.replace(asset_path=str(alias_urdf))
     prim = sim_utils.spawn_from_urdf(
         prim_path, import_cfg, translation=translation, orientation=orientation, **kwargs)
+    apply_query_frame_mass_defaults(stage, prim_path)
     apply_collision_filters(stage, prim_path)
     return prim
 

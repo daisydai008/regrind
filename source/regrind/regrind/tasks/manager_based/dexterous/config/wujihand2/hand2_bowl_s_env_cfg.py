@@ -61,7 +61,13 @@ class Hand2BowlSEnvCfg(DexterousEnvCfg):
         self.scene.robot = make_hand2_right_training_cfg(
             "{ENV_REGEX_NS}/Robot", os.environ["HAND2_USD_CACHE_DIR"])
         self.scene.robot.spawn.activate_contact_sensors = True
-        self.scene.object = BOWL_OBJECT_CFG.replace(prim_path="{ENV_REGEX_NS}/Object")
+        self.scene.object = BOWL_OBJECT_CFG.replace(
+            prim_path="{ENV_REGEX_NS}/Object",
+            spawn=BOWL_OBJECT_CFG.spawn.replace(
+                asset_path=str(contract.C.ROBOT_URDF.parents[1] / "tactidex/hand2_bowl/bowl.urdf"),
+                usd_dir=str(Path(os.environ["HAND2_USD_CACHE_DIR"]).parent / "bowl_usd_cache"),
+            ),
+        )
         self.scene.object.spawn.rigid_props.disable_gravity = False
         self.scene.table.init_state.pos = (-0.15, 0.0, 0.012 - self.scene.table.spawn.size[2] / 2)
 

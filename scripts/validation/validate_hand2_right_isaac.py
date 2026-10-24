@@ -81,7 +81,9 @@ def run_runtime(sim, robot, fixture, torch, stage, model_cfg):
         raise RuntimeError("PhysX did not preserve all 33 link frames (including massless/fixed tips); "
                            f"actual={robot.body_names}. USD-only transforms cannot replace this check")
     body_ids = {name: robot.body_names.index(name) for name in links}
-    report = {"joint_indices": dict(zip(contract.JOINT_NAMES, ids)),
+    masses = model_cfg.check_runtime_masses(robot)  # Must precede gains and hard-set FK.
+    report = {"runtime_masses": masses,
+              "joint_indices": dict(zip(contract.JOINT_NAMES, ids)),
               "applied_parameters": check_applied_parameters(robot, ids),
               "collision_filters": model_cfg.inspect_collision_filters(stage, "/World/Robot"),
               "poses": []}
@@ -153,6 +155,7 @@ def main(argv=None):
               "parameter_status": contract.PARAMETER_STATUS,
               "fixture_sha256": contract.C.sha256(fixture_path), "provenance": fixture["provenance"],
               "runtime_executed": False, "dynamic_steps_requested": 0,
+              "runtime_mass_verification": "not_verified",
               "contact_or_dynamics_verified": False, "headless": True, "enable_cameras": False,
               "configuration": "single floating Hand2 RIGHT, gravity disabled, non-instanceable validation USD"}
     # Reserve the report exclusively before launch; exceptions cannot overwrite another run.
@@ -181,6 +184,8 @@ def main(argv=None):
         if UsdPhysics is None:
             raise RuntimeError("USD physics schema unavailable")
         report["runtime"] = run_runtime(sim, robot, fixture, torch, stage, model_cfg)
+        report["runtime_mass_verification"] = report["runtime"].get("runtime_masses", {}).get(
+            "verification_state", "not_verified")
         report["validation_status"] = "pass"
     except (Exception, SystemExit) as error:
         report["error"] = f"{type(error).__name__}: {error}"

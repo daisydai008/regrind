@@ -1,0 +1,98 @@
+{
+  "additional_decomposition": false,
+  "agreement_scope": "input_geometry_only_not_physics_contact_equivalence",
+  "body": "bottom",
+  "collision_policy": "convex_hull",
+  "copy_policy": "byte_identical_URDF_visual_and_collision_meshes",
+  "mass_kg": 0.3,
+  "payload_sha256": {
+    "Bowl.obj": "e5d8c849c44b9dac971d11faec4f202a25788cadc3dda1a19083fa2dd5a3243e",
+    "bowl.urdf": "396c58b0a80cfd5ef3a506e38652d9c23df340f0b5381039fa3b27c89cc7783b",
+    "collision_parts/part_000.obj": "336fca582cb88bcf7bdf948241237aee9e34eb94137471445da23674cbd2592b",
+    "collision_parts/part_001.obj": "3ce711e83e9d1bf7652b226b5d6144daac51f228e6ad3988adb1e8caa2da27ed",
+    "collision_parts/part_002.obj": "2ca115f059dfb21317a9bc4f6c8aae1e554717ce788f0a90235500d0011ba5c7",
+    "collision_parts/part_003.obj": "ede4d189936b6a0190a9404b7c235384c4c5f264cea0066bbc89e1c9a7e138eb",
+    "collision_parts/part_004.obj": "0b13ea2aecb4ee8127558c6a3f008b1ed4941851bc7128b83a2814a7b6d362d6",
+    "collision_parts/part_005.obj": "05999c3c9569d83675425e50e2ef02b3ff4f8acd29a77bee9091561f38d655af",
+    "collision_parts/part_006.obj": "13a62ed2158e254972c202223520815202d9073049f74b5649cbf81c6cb32c95",
+    "collision_parts/part_007.obj": "d64b08855d2ee2c897a49d16f6757cd8dee83c8d9a63a1c94a77c7fb9a6bba2c",
+    "collision_parts/part_008.obj": "7c42e96b671bf63a02451247e776491ca6cb2d6327c99101521575e838d19b9f",
+    "collision_parts/part_009.obj": "eab75896f514b86d85fef2e7a9a978fa5b669dd189222e50b3854b5c4e842f8b"
+  },
+  "physics_contact_equivalence": false,
+  "physx_internal_cooked_hull_vertices": "unmeasured",
+  "provenance": {
+    "frozen_diagnostic": {
+      "path": "scripts/tactidex_import/retarget/run_hand2_right_diagnostic.py",
+      "sha256": "77a128120250687fd905455f4b729c9e1263d6118aedbc08cdad253e09616473"
+    },
+    "generated_reference": {
+      "path": "data/tactidex/retargeted/wujihand2_diagnostic/bowl_parent_weld_feasible_v1/retargeted_120fps.h5",
+      "sha256": "094338511e2e419a915db30217a8d0dad6c8995a13dd85ec9ff64fac6d29f3bc"
+    },
+    "generation_run": {
+      "path": "data/tactidex/retargeted/wujihand2_diagnostic/bowl_parent_weld_feasible_v1/run.json",
+      "sha256": "871a3ff2532db95f18b89c8b27c27f6836a3b993adb2d168ab4b6940c89de30b"
+    },
+    "publisher": {
+      "path": "scripts/tactidex_import/assets/publish_hand2_bowl_asset.py",
+      "sha256": "27e460603def4c8c307ce55a39617b064b2845304e4c6be69e492cd386e1492f"
+    }
+  },
+  "schema": "hand2_bowl_collision_input_v1",
+  "source_collision_count": 10,
+  "sources": [
+    {
+      "path": "data/tactidex/assets/bowl/bowl.urdf",
+      "sha256": "396c58b0a80cfd5ef3a506e38652d9c23df340f0b5381039fa3b27c89cc7783b"
+    },
+    {
+      "path": "data/tactidex/assets/bowl/Bowl.obj",
+      "sha256": "e5d8c849c44b9dac971d11faec4f202a25788cadc3dda1a19083fa2dd5a3243e"
+    },
+    {
+      "path": "data/tactidex/assets/bowl/collision_parts/part_000.obj",
+      "sha256": "336fca582cb88bcf7bdf948241237aee9e34eb94137471445da23674cbd2592b"
+    },
+    {
+      "path": "data/tactidex/assets/bowl/collision_parts/part_001.obj",
+      "sha256": "3ce711e83e9d1bf7652b226b5d6144daac51f228e6ad3988adb1e8caa2da27ed"
+    },
+    {
+      "path": "data/tactidex/assets/bowl/collision_parts/part_002.obj",
+      "sha256": "2ca115f059dfb21317a9bc4f6c8aae1e554717ce788f0a90235500d0011ba5c7"
+    },
+    {
+      "path": "data/tactidex/assets/bowl/collision_parts/part_003.obj",
+      "sha256": "ede4d189936b6a0190a9404b7c235384c4c5f264cea0066bbc89e1c9a7e138eb"
+    },
+    {
+      "path": "data/tactidex/assets/bowl/collision_parts/part_004.obj",
+      "sha256": "0b13ea2aecb4ee8127558c6a3f008b1ed4941851bc7128b83a2814a7b6d362d6"
+    },
+    {
+      "path": "data/tactidex/assets/bowl/collision_parts/part_005.obj",
+      "sha256": "05999c3c9569d83675425e50e2ef02b3ff4f8acd29a77bee9091561f38d655af"
+    },
+    {
+      "path": "data/tactidex/assets/bowl/collision_parts/part_006.obj",
+      "sha256": "13a62ed2158e254972c202223520815202d9073049f74b5649cbf81c6cb32c95"
+    },
+    {
+      "path": "data/tactidex/assets/bowl/collision_parts/part_007.obj",
+      "sha256": "d64b08855d2ee2c897a49d16f6757cd8dee83c8d9a63a1c94a77c7fb9a6bba2c"
+    },
+    {
+      "path": "data/tactidex/assets/bowl/collision_parts/part_008.obj",
+      "sha256": "7c42e96b671bf63a02451247e776491ca6cb2d6327c99101521575e838d19b9f"
+    },
+    {
+      "path": "data/tactidex/assets/bowl/collision_parts/part_009.obj",
+      "sha256": "eab75896f514b86d85fef2e7a9a978fa5b669dd189222e50b3854b5c4e842f8b"
+    }
+  ],
+  "target_collision_count": 10,
+  "warnings": [
+    "Bowl.obj references unavailable Bowl.mtl; not copied or invented (visual-only limitation)."
+  ]
+}
