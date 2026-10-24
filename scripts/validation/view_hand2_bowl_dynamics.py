@@ -13,7 +13,7 @@ import math
 import os
 from pathlib import Path
 import time
-from types import MethodType
+from types import MethodType, SimpleNamespace
 
 TASK = "Regrind-WujiHand2-Bowl-S-Play-v0"
 PROFILE = "inertia-derived"
@@ -226,25 +226,142 @@ def ui_update_only(app, sim):
         sim.set_setting("/app/player/playSimulations", True)
 
 
-def run(app, probe, factory, max_seconds, output, hand_gravity="off"):
+def recording_frame_count(value):
+    if isinstance(value, bool) or not isinstance(value, int) or not 1 <= value <= 1800:
+        raise ValueError("--record-frames must be an integer in [1, 1800]")
+    return value
+
+
+class VideoRecording:
+    """Own one exclusive MP4 reservation and stream one frame per successful step."""
+    resolution = (1280, 720)
+    camera_target = (-0.48731698, 0.05815392, 0.21418751)
+    camera_offset = (0.40, -0.65, 0.45)
+    horizontal_width = 1.40
+
+    def __init__(self, path, frames=240):
+        self.limit = recording_frame_count(frames)
+        # Inspect the unnormalized path too, so symlink/../ cannot bypass rejection.
+        raw = Path(path).expanduser().absolute()
+        if any(p.is_symlink() for p in (raw, *raw.parents)):
+            raise ValueError(f"Symlink video path rejected: {raw}")
+        self.path = Path(os.path.abspath(raw))
+        if self.path.suffix.lower() != ".mp4":
+            raise ValueError("--record-video must name a new .mp4 file")
+        if not self.path.parent.is_dir():
+            raise ValueError("Video parent directory must already exist")
+        fd = os.open(self.path, os.O_CREAT | os.O_EXCL | os.O_WRONLY | os.O_NOFOLLOW, 0o600)
+        try:
+            stat = os.fstat(fd)
+            self.identity = (stat.st_dev, stat.st_ino)
+        finally:
+            os.close(fd)
+        self.writer = None
+        self.started = False
+        self.frames = 0
+
+    def start(self, sim):
+        import imageio.v2 as imageio
+        import omni.usd
+        import omni.replicator.core as rep
+        from pxr import UsdGeom
+        from PIL import ImageFont
+
+        stat = self.path.lstat()
+        if self.path.is_symlink() or (stat.st_dev, stat.st_ino) != self.identity or stat.st_size:
+            raise ValueError("Video reservation changed before writer startup")
+        font = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+        self.heading_font = ImageFont.truetype(font, 32)
+        self.status_font = ImageFont.truetype(font, 26)
+        camera_path = "/World/Hand2RecordingCamera"
+        camera = UsdGeom.Camera.Define(omni.usd.get_context().get_stage(), camera_path)
+        camera.CreateProjectionAttr().Set("orthographic")
+        camera.CreateClippingRangeAttr().Set((0.01, 100.0))  # USD default near=1 m clips this close-up.
+        # Full pinned H5 root/object/all named keypoints: projected spans
+        # 0.49793684 x 0.43874866 m. 0.6 m width clips vertical motion.
+        # Bowl visual mesh over all H5 poses reaches camera y=+0.27452614 m;
+        # 1.40 m extent keeps it below the top bar (+0.301875 m), with margin.
+        camera.CreateHorizontalApertureAttr().Set(self.horizontal_width * 10)
+        camera.CreateVerticalApertureAttr().Set(self.horizontal_width * 10 * 720 / 1280)
+        sim.set_camera_view(tuple(a + b for a, b in zip(self.camera_target, self.camera_offset)),
+                            self.camera_target, camera_prim_path=camera_path)
+        self.product = rep.create.render_product(camera_path, self.resolution)
+        self.annotator = rep.AnnotatorRegistry.get_annotator("rgb", device="cpu")
+        self.annotator.attach([self.product])
+        sim.forward()
+        for _ in range(4):
+            sim.render()  # Render-only warmup: no physics or env.reset.
+        self.writer = imageio.get_writer(str(self.path), fps=30, codec="libx264", macro_block_size=16)
+        self.started = True
+
+    def audit(self):
+        return {"path": str(self.path), "requested_frames": self.limit, "fps": 30,
+                "resolution": list(self.resolution), "capture": "one frame per successful env.step; no wall-clock sampling",
+                "camera_target": list(self.camera_target), "camera_eye_offset": list(self.camera_offset),
+                "orthographic_horizontal_width_m": self.horizontal_width,
+                "reference_projected_span_m": [0.49793684, 0.43874866],
+                "camera_bounds_source": "pinned H5 all 1985 frames: robot_pos, object_pos, all 21 named robot_keypoints",
+                "bowl_mesh_projected_y_m": [-0.26647712, 0.27452614],
+                "geometry_margin_scope": "Bowl visual mesh transformed at all H5 poses; hand keypoints plus framing allowance, not a hand mesh audit",
+                "approval": "NOT a dynamics/policy approval; completion requires successful close and frame count"}
+
+    def capture(self, sim, steps, resets, phase_elapsed, hand_gravity):
+        import numpy as np
+        from PIL import Image, ImageDraw
+        if steps != self.frames + 1 or steps > self.limit or not math.isfinite(phase_elapsed) or phase_elapsed < 0:
+            raise ValueError("Invalid recording step/phase counter")
+        sim.forward()  # Synchronize post-step/post-auto-reset transforms; no physics.
+        sim.render()
+        rgb = np.asarray(self.annotator.get_data())
+        if rgb.shape not in ((720, 1280, 3), (720, 1280, 4)) or rgb.dtype != np.uint8 or not np.any(rgb[:, :, :3]):
+            raise ValueError(f"Invalid/empty RGB render: {rgb.shape}")
+        image = Image.fromarray(rgb[:, :, :3])
+        draw = ImageDraw.Draw(image)
+        draw.rectangle((0, 0, 1279, 83), fill="black")
+        draw.rectangle((0, 676, 1279, 719), fill="black")
+        draw.text((16, 5), "Hand 2.2 RIGHT | Isaac dynamics (NO POLICY)", font=self.heading_font, fill="white")
+        draw.text((16, 46), f"Finger gravity {hand_gravity.upper()} | Bowl: contact + gravity | 30 Hz",
+                  font=self.status_font, fill="white")
+        draw.text((16, 682), f"Frame {steps}/{self.limit} | episode_resets {resets} (+1 initial) | sim {steps/30:.2f}s | phase {phase_elapsed:.2f}s",
+                  font=self.status_font, fill="white")
+        self.writer.append_data(np.asarray(image))  # Stream, never accumulate frames.
+        self.frames += 1
+
+    def close(self):
+        if self.writer is not None:
+            writer, self.writer = self.writer, None
+            writer.close()
+        if not self.started:
+            # Remove only our still-empty reservation, never a pre-existing/replaced file.
+            try:
+                stat = self.path.lstat()
+            except FileNotFoundError:
+                return
+            if not self.path.is_symlink() and (stat.st_dev, stat.st_ino) == self.identity and stat.st_size == 0:
+                self.path.unlink()
+
+
+def run(app, probe, factory, max_seconds, output, hand_gravity="off", *, recording=None):
     import gymnasium as gym
     import numpy as np
     import torch
-    import omni.ui as ui
     import isaaclab_tasks  # noqa: F401
     from isaaclab_tasks.utils import parse_env_cfg
     import regrind.tasks  # noqa: F401
 
     gravity_label = "ON + root-only ideal net weight support (NOT arm dynamics)" if hand_gravity == "on" else "OFF"
-    window = ui.Window("DYNAMIC BOWL — NO POLICY", width=750, height=260)
-    with window.frame:
-        with ui.VStack(spacing=3):
-            ui.Label("Bowl: gravity + contact only; normal episode resets; NO per-frame Bowl writes")
-            ui.Label(f"Hand gravity {gravity_label} | Bowl gravity ON | table top 0.012 m; known initial overlap", word_wrap=True)
-            ui.Label("Virtual root PD UNCALIBRATED, NOT official arm controller | generic vendor fingers | NO PPO", word_wrap=True)
-            finger_status = ui.Label("Official generic finger contract: audit pending | NO PPO", word_wrap=True)
-            status = ui.Label("STARTING: runtime mass/gravity checks pending", word_wrap=True)
-            motion_status = ui.Label("Object actual/reference position error: pending", word_wrap=True)
+    finger_status, status, motion_status = (SimpleNamespace(text="") for _ in range(3))
+    if recording is None:
+        import omni.ui as ui
+        window = ui.Window("DYNAMIC BOWL — NO POLICY", width=750, height=260)
+        with window.frame:
+            with ui.VStack(spacing=3):
+                ui.Label("Bowl: gravity + contact only; normal episode resets; NO per-frame Bowl writes")
+                ui.Label(f"Hand gravity {gravity_label} | Bowl gravity ON | table top 0.012 m; known initial overlap", word_wrap=True)
+                ui.Label("Virtual root PD UNCALIBRATED, NOT official arm controller | generic vendor fingers | NO PPO", word_wrap=True)
+                finger_status = ui.Label("Official generic finger contract: audit pending | NO PPO", word_wrap=True)
+                status = ui.Label("STARTING: runtime mass/gravity checks pending", word_wrap=True)
+                motion_status = ui.Label("Object actual/reference position error: pending", word_wrap=True)
     cfg = parse_env_cfg(TASK, device="cuda:0", num_envs=1, use_fabric=True)
     configure_root(cfg, probe)
     configure_gravity(cfg, hand_gravity)
@@ -278,6 +395,8 @@ def run(app, probe, factory, max_seconds, output, hand_gravity="off"):
                    "physics_dt_s": cfg.sim.dt, "physics_hz": 120, "control_hz": 30,
                    "finger_torque_disclaimer": "robot.data.applied_torque is a clipped PD ESTIMATE, NOT the implicit PhysX solver law or measured joint torque",
                    "policy": "NONE; NO PPO", "known_initial_table_overlap_unchanged": True})
+    if recording is not None:
+        report["recording"] = recording.audit()
     save_parameter_audit(output, report)
     actions = torch.zeros((1, 26), device=env.device)
     command = env.command_manager.get_term("motion")
@@ -288,8 +407,13 @@ def run(app, probe, factory, max_seconds, output, hand_gravity="off"):
           "official_finger_contract=VERIFIED generic_vendor=true NO_PPO NOT_official_arm_controller "
           "table_top_m=0.012 UNCALIBRATED known_table_overlap=true no_per_frame_Bowl_writes=true", flush=True)
     finger_status.text = "Official generic finger contract VERIFIED (uncalibrated vendor parameters) | NO PPO"
-    while app.is_running() and time.monotonic() - start < max_seconds:
+    if recording is not None:
+        recording.start(sim)
+    while app.is_running() and (steps < recording.limit if recording is not None else time.monotonic() - start < max_seconds):
         tick = time.monotonic()
+        if recording is not None and not sim.is_playing():
+            frozen = "Recording simulation stopped/paused"
+            break
         if frozen is None and sim.is_playing():
             try:
                 with torch.inference_mode():
@@ -310,10 +434,15 @@ def run(app, probe, factory, max_seconds, output, hand_gravity="off"):
                         error = np.linalg.norm(actual - reference)
                         motion_status.text = (f"Object actual {np.round(actual, 4)} m | reference {np.round(reference, 4)} m "
                                               f"| error {error:.4f} m (post-step/post-reset)")
+                    if recording is not None:
+                        phase_elapsed = float(array(command.timesteps_in_current_demo)[0]) / 30
+                        recording.capture(sim, steps, resets, phase_elapsed, hand_gravity)
             except Exception as error:
                 frozen = f"{type(error).__name__}: {error}"
                 sim.pause()
                 print(f"FROZEN — NOT SUCCESS: {frozen}", flush=True)
+                if recording is not None:
+                    break  # Headless failures stop immediately, never wait for GUI timeout.
         if frozen is not None:
             sim.pause()
         status.text = (f"{'FROZEN — NOT SUCCESS: ' + frozen if frozen else ('RUNNING' if sim.is_playing() else 'PAUSED')} "
@@ -324,7 +453,11 @@ def run(app, probe, factory, max_seconds, output, hand_gravity="off"):
             print(f"steps={steps} episode_resets={resets} wall_s={time.monotonic()-start:.1f} "
                   f"no_per_frame_Bowl_writes=true state={'FROZEN' if frozen else 'live/paused'}", flush=True)
             last_print = time.monotonic()
-        time.sleep(max(0.0, 1 / 30 - (time.monotonic() - tick)))
+        if recording is None:
+            time.sleep(max(0.0, 1 / 30 - (time.monotonic() - tick)))
+    if recording is not None and (frozen is not None or recording.frames != recording.limit):
+        print(f"RECORDING_FAILED frames={recording.frames}/{recording.limit} reason={frozen or 'application stopped'} path={recording.path}", flush=True)
+        return 1
     return 1 if frozen is not None else 0
 
 
@@ -333,26 +466,61 @@ def main(argv=None):
     parser.add_argument("--output-dir", type=Path, required=True, help="NEW local directory; parent must exist; USD caches and parameter_audit.json")
     parser.add_argument("--max-seconds", type=float, default=3600, help="Wall-clock GUI limit (default: 3600)")
     parser.add_argument("--hand-gravity", choices=("off", "on"), default="off", help="Default off; on adds root-only ideal net weight support, NOT arm dynamics")
+    parser.add_argument("--record-video", type=Path, help="NEW .mp4; existing parent required; enables headless cameras")
+    parser.add_argument("--record-frames", type=int, default=240, help="Successful steps/frames at 30 Hz (1..1800, default: 240 = 8 sim seconds)")
     args = parser.parse_args(argv)  # --help imports no numpy/torch/Isaac.
+    try:
+        recording_frame_count(args.record_frames)
+    except ValueError as error:
+        parser.error(str(error))
     if not math.isfinite(args.max_seconds) or args.max_seconds <= 0:
         parser.error("--max-seconds must be finite and positive")
-    probe = load_module("hand2_live_probe", Path(__file__).with_name("validate_hand2_free_space.py"))
-    factory = load_module("hand2_live_factory", probe.ROBOTS / "free_hand2_right_hand.py")
-    probe.preflight(factory.contract)
-    data = Path(os.environ.setdefault("REGRIND_DATA_DIR", str(REPO / "data")))
-    if not data.is_dir() or factory.contract.safe_path(data / "hand2_right/bowl/retargeted_120fps.h5") != probe.REFERENCE:
-        raise ValueError("REGRIND_DATA_DIR must resolve to the preflight-pinned task data")
-    output = factory.contract.new_path(args.output_dir)
-    output.mkdir()
-    os.environ["HAND2_USD_CACHE_DIR"] = str(output / "hand_usd_cache")
-    app = None
+    app = recording = None
+    result = 1
     try:
+        # Exclusive reservation precedes app startup, output directory and USD caches.
+        if args.record_video is not None:
+            recording = VideoRecording(args.record_video, args.record_frames)
+        probe = load_module("hand2_live_probe", Path(__file__).with_name("validate_hand2_free_space.py"))
+        factory = load_module("hand2_live_factory", probe.ROBOTS / "free_hand2_right_hand.py")
+        probe.preflight(factory.contract)
+        data = Path(os.environ.setdefault("REGRIND_DATA_DIR", str(REPO / "data")))
+        if not data.is_dir() or factory.contract.safe_path(data / "hand2_right/bowl/retargeted_120fps.h5") != probe.REFERENCE:
+            raise ValueError("REGRIND_DATA_DIR must resolve to the preflight-pinned task data")
+        output = factory.contract.new_path(args.output_dir)
+        output.mkdir()
+        os.environ["HAND2_USD_CACHE_DIR"] = str(output / "hand_usd_cache")
         from isaaclab.app import AppLauncher
-        app = AppLauncher(headless=False, device="cuda:0").app
-        return run(app, probe, factory, args.max_seconds, output, args.hand_gravity)
+        if recording is None:
+            app = AppLauncher(headless=False, device="cuda:0").app
+            result = run(app, probe, factory, args.max_seconds, output, args.hand_gravity)
+        else:
+            app = AppLauncher(headless=True, enable_cameras=True, device="cuda:0").app
+            result = run(app, probe, factory, args.max_seconds, output, args.hand_gravity, recording=recording)
+    except Exception as error:
+        if args.record_video is None:
+            raise
+        print(f"RECORDING_FAILED {type(error).__name__}: {error} path={args.record_video}", flush=True)
+        result = 1
     finally:
-        if app is not None:
-            app.close(skip_cleanup=True)  # Only the app created by this invocation.
+        try:
+            if recording is not None:
+                recording.close()  # Always finalize partial videos; never delete recorded data.
+        except Exception as error:
+            print(f"RECORDING_FAILED writer close: {type(error).__name__}: {error}", flush=True)
+            result = 1
+        finally:
+            # Immediate Isaac close can terminate the process instead of returning.
+            # Publish completion only after writer.close, but before application close.
+            if recording is not None and result == 0:
+                if recording.frames != recording.limit:
+                    print(f"RECORDING_FAILED frame count={recording.frames}/{recording.limit}", flush=True)
+                    result = 1
+                else:
+                    print(f"RECORDING_COMPLETE frames={recording.frames} path={recording.path}", flush=True)
+            if app is not None:
+                app.close(skip_cleanup=True)  # Only the app created by this invocation.
+    return result
 
 
 if __name__ == "__main__":
