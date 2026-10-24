@@ -61,6 +61,18 @@ class Hand2KettleBlackMeshTipSEnvCfg_PLAY(Hand2KettleBlackMeshTipSEnvCfg):
 
 
 @configclass
+class Hand2KettleBlackMeshTipWrenchV4SEnvCfg(Hand2KettleBlackMeshTipSEnvCfg):
+    def __post_init__(self):
+        super().__post_init__()
+        self.actions.root_pose = self.actions.root_pose.replace(root_controller_profile="com_wrench_bounded_v4")
+
+
+@configclass
+class Hand2KettleBlackMeshTipWrenchV4SEnvCfg_PLAY(Hand2KettleBlackMeshTipWrenchV4SEnvCfg):
+    """Identical Train/Play physics and normal terminations."""
+
+
+@configclass
 class Hand2SpoonMeshTipSEnvCfg(_Hand2CaseMeshTipSEnvCfg):
     case_name: str = "spoon"
 

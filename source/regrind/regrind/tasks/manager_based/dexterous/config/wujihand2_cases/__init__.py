@@ -12,3 +12,14 @@ for case in ("KettleBlack", "Spoon"):
                 "rsl_rl_cfg_entry_point": f"{__name__}.rsl_rl_ppo_cfg:Hand2{case}MeshTipSPPORunnerCfg",
             },
         )
+
+for suffix, cfg_suffix in (("", ""), ("-Play", "_PLAY")):
+    gym.register(
+        id=f"Regrind-WujiHand2-KettleBlack-MeshTip-WrenchV4-S{suffix}-v0",
+        entry_point="isaaclab.envs:ManagerBasedRLEnv",
+        disable_env_checker=True,
+        kwargs={
+            "env_cfg_entry_point": f"{__name__}.hand2_single_env_cfg:Hand2KettleBlackMeshTipWrenchV4SEnvCfg{cfg_suffix}",
+            "rsl_rl_cfg_entry_point": f"{__name__}.rsl_rl_ppo_cfg:Hand2KettleBlackMeshTipSPPORunnerCfg",
+        },
+    )
