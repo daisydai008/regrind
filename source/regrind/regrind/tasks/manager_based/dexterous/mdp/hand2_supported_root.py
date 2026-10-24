@@ -12,6 +12,11 @@ from isaaclab.utils.math import axis_angle_from_quat, quat_conjugate, quat_mul
 from .actions import SE3ImpedanceActionCfg, SE3ImpedanceActionTerm
 
 GAINS = (300.0, 30.0, 0.01825096675712572, 0.0036501933514251437)
+# Nonofficial virtual-wrist learning hypotheses, not hardware calibration.
+PROFILE_GAINS = {
+    "root_supported_v1": GAINS,
+    "com_supported_v2": (300.0, 30.0, 3.0, 0.02),
+}
 
 
 def finite_tensor(value, shape, label):
@@ -45,7 +50,7 @@ def support_wrench(masses, body_com_pos_w, root_link_pos_w, gravity):
     return force, torque
 
 
-def guarded_native_pd(state, origins, target_pos, target_quat, gains=GAINS):
+def guarded_native_pd(state, origins, target_pos, target_quat, gains=GAINS, profile="root_supported_v1"):
     """Native root_state_w LINK pose + root-body COM velocity damping, no FF."""
     n = state.shape[0]
     for value, shape, label in ((state, (n, 13), "root state"), (origins, (n, 3), "env origins"),
@@ -53,8 +58,8 @@ def guarded_native_pd(state, origins, target_pos, target_quat, gains=GAINS):
         finite_tensor(value, shape, label)
         if value.device != state.device or value.dtype != state.dtype:
             raise ValueError("PD dtype/device mismatch")
-    if tuple(gains) != GAINS or not all(math.isfinite(v) for v in gains):
-        raise ValueError("Root gains differ from fixed v2 hypothesis")
+    if profile not in PROFILE_GAINS or tuple(gains) != PROFILE_GAINS[profile] or not all(math.isfinite(v) for v in gains):
+        raise ValueError("Unknown root profile or gains differ from fixed profile hypothesis")
     unit_quaternions(state[:, 3:7], "state quaternion")
     unit_quaternions(target_quat, "target quaternion")
     kp_pos, kd_pos, kp_rot, kd_rot = gains
@@ -150,8 +155,11 @@ class Hand2SupportedRootAction(SE3ImpedanceActionTerm):
         super().__init__(cfg, env)
         if cfg.body_name != "r_mount" or self._asset.body_names[self._wrench_body_ids[0]] != "r_mount":
             raise ValueError("Support must act on named r_mount only")
-        if tuple(getattr(self, key) for key in ("kp_pos", "kd_pos", "kp_rot", "kd_rot")) != GAINS:
-            raise ValueError("Expected fixed v2 root gains")
+        self._root_controller_profile = cfg.root_controller_profile
+        if (self._root_controller_profile not in PROFILE_GAINS
+                or tuple(getattr(self, key) for key in ("kp_pos", "kd_pos", "kp_rot", "kd_rot"))
+                != PROFILE_GAINS[self._root_controller_profile]):
+            raise ValueError("Unknown root profile or gains differ from fixed profile hypothesis")
         self._body_mass, self._limits = audit_startup(self._asset, env)
         self._gravity = self._body_mass.new_tensor([0.0, 0.0, -9.81])
         # Targets are None until native process_actions; never call PD in ctor.
@@ -174,10 +182,17 @@ class Hand2SupportedRootAction(SE3ImpedanceActionTerm):
                      robot.data.joint_vel_target, robot.data.joint_effort_target, self._limits)
         pd = guarded_native_pd(robot.data.root_state_w, self._env.scene.env_origins,
                                self.target_pos, self.target_quat,
-                               tuple(getattr(self, key) for key in ("kp_pos", "kd_pos", "kp_rot", "kd_rot")))
+                               tuple(getattr(self, key) for key in ("kp_pos", "kd_pos", "kp_rot", "kd_rot")),
+                               profile=self._root_controller_profile)
         point = robot.data.root_link_pos_w
         support = support_wrench(self._body_mass, robot.data.body_com_pos_w, point, self._gravity)
         force, torque = pd[0] + support[0], pd[1] + support[1]
+        if self._root_controller_profile == "com_supported_v2":
+            hand_com = (self._body_mass.unsqueeze(-1) * robot.data.body_com_pos_w).sum(dim=1) / self._body_mass.sum(dim=1, keepdim=True)
+            finite_tensor(hand_com, (n, 3), "whole-hand COM")
+            # Shift only the guarded PD force to the whole-hand COM; gravity
+            # support stays a root-LINK wrench. The plus sign preserves moments.
+            torque = torque + torch.cross(hand_com - point, pd[0], dim=-1)
         finite_tensor(force, (n, 3), "combined force")
         finite_tensor(torque, (n, 3), "combined torque")
         # One call only: a second external-wrench call would overwrite support.
@@ -189,6 +204,7 @@ class Hand2SupportedRootAction(SE3ImpedanceActionTerm):
 @configclass
 class Hand2SupportedRootActionCfg(SE3ImpedanceActionCfg):
     class_type: type = Hand2SupportedRootAction
+    root_controller_profile: str = "root_supported_v1"
     kp_pos: float = GAINS[0]
     kd_pos: float = GAINS[1]
     kp_rot: float = GAINS[2]

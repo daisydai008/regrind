@@ -35,3 +35,20 @@ class Hand2BowlMeshTipSEnvCfg(Hand2BowlSEnvCfg):
 @configclass
 class Hand2BowlMeshTipSEnvCfg_PLAY(Hand2BowlMeshTipSEnvCfg):
     """Identical physics, guards and normal terminations; no Play-only relaxation."""
+
+
+@configclass
+class Hand2BowlMeshTipWristV2SEnvCfg(Hand2BowlMeshTipSEnvCfg):
+    """Opt-in nonofficial virtual-wrist hypothesis, not hardware calibration."""
+
+    def __post_init__(self):
+        super().__post_init__()
+        self.actions.root_pose = self.actions.root_pose.replace(
+            root_controller_profile="com_supported_v2",
+            kp_pos=300.0, kd_pos=30.0, kp_rot=3.0, kd_rot=0.02,
+        )
+
+
+@configclass
+class Hand2BowlMeshTipWristV2SEnvCfg_PLAY(Hand2BowlMeshTipWristV2SEnvCfg):
+    """Same v2 physics and guards; no Play-only relaxation."""
