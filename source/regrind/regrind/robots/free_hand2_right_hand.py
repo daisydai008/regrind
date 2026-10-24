@@ -215,3 +215,32 @@ def make_hand2_right_cfg(prim_path, usd_dir):
         init_state=ArticulationCfg.InitialStateCfg(joint_pos={n: 0.0 for n in values}),
         soft_joint_pos_limit_factor=1.0,
     )
+
+
+def spawn_hand2_right_training(prim_path, cfg, translation=None, orientation=None, **kwargs):
+    """Import once, then let Isaac's clone decorator remap the USD relationships."""
+    if prim_path != "/World/envs/env_.*/Robot":
+        raise ValueError("Training spawn accepts only /World/envs/env_.*/Robot")
+    if cfg.make_instanceable:
+        raise ValueError("Hand2 filtered training clones must not be instanceable")
+    import isaaclab.sim as sim_utils
+    import omni.usd
+
+    # The concrete spawner alone owns the new cache. Never import once per env.
+    prim = sim_utils.clone(spawn_hand2_right)(
+        prim_path, cfg, translation=translation, orientation=orientation, **kwargs)
+    stage = omni.usd.get_context().get_stage()
+    for path in sim_utils.find_matching_prim_paths(prim_path):
+        inspect_collision_filters(stage, path)
+    return prim
+
+
+def make_hand2_right_training_cfg(prim_path, usd_dir):
+    """Explicit training adapter; no cache creation or generic-regex permission."""
+    if prim_path not in ("{ENV_REGEX_NS}/Robot", "/World/envs/env_.*/Robot"):
+        raise ValueError("Expected the exact Hand2 training environment namespace")
+    cfg = make_hand2_right_cfg("/World/envs/env_0/Robot", usd_dir)
+    return cfg.replace(
+        prim_path=prim_path,
+        spawn=cfg.spawn.replace(func=spawn_hand2_right_training, copy_from_source=True),
+    )

@@ -1,0 +1,124 @@
+{
+  "anchor_wrist_frame": "r_wrist",
+  "approval_scope": "user_approved_Bowl_reference_local_pilot_only",
+  "approved_for_training": true,
+  "approved_physics": false,
+  "augmentation": false,
+  "control_frames": 497,
+  "controller_validation": "pending",
+  "fixed_parameters": true,
+  "fps": 120,
+  "frames": 1985,
+  "human_verification": {
+    "full_interpolated_120fps_half_open": [
+      564,
+      2549
+    ],
+    "max_abs_error": 8.326672684688674e-16,
+    "method": "pinned_RHO.interpolate_demo_factor4",
+    "original_30fps_half_open": [
+      141,
+      638
+    ],
+    "role": "human_demo_only_no_robot_reference",
+    "tolerance": 2e-12
+  },
+  "joint_names": [
+    "r_thumb_cmc_flex",
+    "r_thumb_cmc_abd",
+    "r_thumb_mcp",
+    "r_thumb_ip",
+    "r_index_finger_mcp_flex",
+    "r_index_finger_mcp_abd",
+    "r_index_finger_pip",
+    "r_index_finger_dip",
+    "r_middle_finger_mcp_flex",
+    "r_middle_finger_mcp_abd",
+    "r_middle_finger_pip",
+    "r_middle_finger_dip",
+    "r_ring_finger_mcp_flex",
+    "r_ring_finger_mcp_abd",
+    "r_ring_finger_pip",
+    "r_ring_finger_dip",
+    "r_pinky_mcp_flex",
+    "r_pinky_mcp_abd",
+    "r_pinky_pip",
+    "r_pinky_dip"
+  ],
+  "model": {
+    "asset_urdf_sha256": "932e8f4c052c26ccc70b93756f8a888c42e41a576ea75de30be4db417d9d6a7f",
+    "contract_sha256": "45311f78d3c82d0d4b54050b68477cf26a66f67b924e25156bb9bc93848c20db",
+    "diagnostic_constants_sha256": "4281c40f43f2b17af036e5b9b73f84542ab4186df5914f7380367ca37401e855",
+    "manifest_sha256": "e7153478d1d955a39cebe480ffd48e99ab2c81f9d8113a975d6c41667ff03d66",
+    "mjcf_sha256": "c11ab34b0fd0c1d520d108ffdefe45bfc05711bb2e97946a6bda96888cf02847",
+    "model_payload_sha256": "fab39d5c6285dda26aef419053b52bea28df86fb08cbddc661a927013d484049",
+    "model_pin": "829c9aa27cb12c3a49d5b8d63c9869dd8f656702",
+    "parameter_sha256": "5d031abb6c8cb13f95d787e2cf942b7b0dc4f2a4f27515e20c55466b50d79fce",
+    "source_urdf_sha256": "9ad34330b2fd30b4d4d192ecd4d8a52e80fa266c938d0d51e9fe454267c42d86"
+  },
+  "motion_loader_wrist_target_frame": "r_mount",
+  "output_sha256": {
+    "demo_interp_120fps.h5": "4433ac0c3c313d895c3512efb4061b66da0c6792ba2a3ff4a296ef9259aa7078",
+    "keypoints.npy": "16dcaa62c4c84e79a79a7b88a05aabfe348a05bed586f4fb6c423ce88071fe3c",
+    "retargeted_120fps.h5": "cf2651b843c620e25c1aad1776b3f07f4fc930bac0a2f52c70a19ce30cb4a357"
+  },
+  "projection": "minimum_mixed_coordinate_L2_feasibility_projection",
+  "root_frame": "r_mount",
+  "schema": "hand2_bowl_runtime_v1",
+  "source_full_frames": 3037,
+  "source_limitations": [
+    "legacy Delaunay duplicate source issue unchanged",
+    "per-mesh convex hull preparatory geometry",
+    "MuJoCo floating-root parent/weld filter parity; geometry unchanged",
+    "filtered zero-seed result does not establish collision freedom at other poses"
+  ],
+  "source_policy": "native_baseline_duplicate_source_policy_unresolved",
+  "source_quality_pass": true,
+  "source_window_120fps_half_open": [
+    564,
+    2549
+  ],
+  "sources": [
+    {
+      "absolute_path": "/home/daisy/regrind-development/data/tactidex/retargeted/wujihand2_diagnostic/bowl_parent_weld_feasible_v1/retargeted_120fps.h5",
+      "relative_path": "data/tactidex/retargeted/wujihand2_diagnostic/bowl_parent_weld_feasible_v1/retargeted_120fps.h5",
+      "sha256": "094338511e2e419a915db30217a8d0dad6c8995a13dd85ec9ff64fac6d29f3bc"
+    },
+    {
+      "absolute_path": "/home/daisy/regrind-development/data/tactidex/retargeted/wujihand2_diagnostic/bowl_parent_weld_feasible_v1/run.json",
+      "relative_path": "data/tactidex/retargeted/wujihand2_diagnostic/bowl_parent_weld_feasible_v1/run.json",
+      "sha256": "871a3ff2532db95f18b89c8b27c27f6836a3b993adb2d168ab4b6940c89de30b"
+    },
+    {
+      "absolute_path": "/home/daisy/regrind-development/data/tactidex/retargeted/wujihand2_diagnostic/bowl_parent_weld_full_v1/run.json",
+      "relative_path": "data/tactidex/retargeted/wujihand2_diagnostic/bowl_parent_weld_full_v1/run.json",
+      "sha256": "eee225cbf6c5e4eca036e77d927fcb636e0f2777afc731490d19746a26a85a7d"
+    },
+    {
+      "absolute_path": "/home/daisy/regrind-development/data/tactidex/retargeted/wujihand2_diagnostic/bowl_parent_weld_full_v1/retargeted_120fps.h5",
+      "relative_path": "data/tactidex/retargeted/wujihand2_diagnostic/bowl_parent_weld_full_v1/retargeted_120fps.h5",
+      "sha256": "bf19ca8ade47a68abbfec11d4ceb032f0c7f403914b9be3868ce4d9e0c599f2e"
+    },
+    {
+      "absolute_path": "/home/daisy/regrind-development/data/tactidex/retargeted/wujihand/drink_bowl_R_s0t1_sw05/training/demo_interp_120fps.h5",
+      "relative_path": "data/tactidex/retargeted/wujihand/drink_bowl_R_s0t1_sw05/training/demo_interp_120fps.h5",
+      "sha256": "4433ac0c3c313d895c3512efb4061b66da0c6792ba2a3ff4a296ef9259aa7078"
+    },
+    {
+      "absolute_path": "/home/daisy/regrind-development/data/tactidex/regrind_demo/TactiDex_Drink_S0H01A0007T1_R/demo_30fps.h5",
+      "relative_path": "data/tactidex/regrind_demo/TactiDex_Drink_S0H01A0007T1_R/demo_30fps.h5",
+      "sha256": "7e4f201b93c1adc9d15094589d9d1656cdc31c367bb39f3b6fb730293538ff1a"
+    },
+    {
+      "absolute_path": "/home/daisy/regrind-development/data/tactidex/keypoints/bowl_100_filtered_drink.npy",
+      "relative_path": "data/tactidex/keypoints/bowl_100_filtered_drink.npy",
+      "sha256": "16dcaa62c4c84e79a79a7b88a05aabfe348a05bed586f4fb6c423ce88071fe3c"
+    },
+    {
+      "absolute_path": "/home/daisy/regrind-development/repos/regrind/scripts/retarget_hand_object.py",
+      "relative_path": "repos/regrind/scripts/retarget_hand_object.py",
+      "sha256": "86cc71fc8d228f3c5102ea4a5abf7b8ef31b104eb400a90d8aa71251faa546cf"
+    }
+  ],
+  "speed_factor": 1.0
+}
