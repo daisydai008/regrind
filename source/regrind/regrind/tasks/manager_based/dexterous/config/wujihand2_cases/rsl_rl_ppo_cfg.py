@@ -12,3 +12,11 @@ class Hand2KettleBlackMeshTipSPPORunnerCfg(Hand2BowlSPPORunnerCfg):
 @configclass
 class Hand2SpoonMeshTipSPPORunnerCfg(Hand2BowlSPPORunnerCfg):
     experiment_name = "wujihand2_spoon_meshtip_s"
+
+
+@configclass
+class Hand2KnifeMeshTipSPPORunnerCfg(Hand2BowlSPPORunnerCfg):
+    experiment_name = "wujihand2_knife_meshtip_s"
+    max_iterations = 20000
+    resume = False
+    # Inherit standard fresh PPO: seed 42, std 0.5, zero last actor layer.
