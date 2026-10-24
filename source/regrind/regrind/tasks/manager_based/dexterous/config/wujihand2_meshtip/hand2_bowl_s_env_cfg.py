@@ -52,3 +52,17 @@ class Hand2BowlMeshTipWristV2SEnvCfg(Hand2BowlMeshTipSEnvCfg):
 @configclass
 class Hand2BowlMeshTipWristV2SEnvCfg_PLAY(Hand2BowlMeshTipWristV2SEnvCfg):
     """Same v2 physics and guards; no Play-only relaxation."""
+
+
+@configclass
+class Hand2BowlMeshTipWristV3SEnvCfg(Hand2BowlMeshTipWristV2SEnvCfg):
+    """SIM virtual wrist: 1 Nm PD saturation, not a combined root torque cap."""
+
+    def __post_init__(self):
+        super().__post_init__()
+        self.actions.root_pose = self.actions.root_pose.replace(root_controller_profile="com_bounded_v3")
+
+
+@configclass
+class Hand2BowlMeshTipWristV3SEnvCfg_PLAY(Hand2BowlMeshTipWristV3SEnvCfg):
+    """Same v3 physics and guards; no Play-only relaxation."""

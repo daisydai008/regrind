@@ -16,6 +16,7 @@ GAINS = (300.0, 30.0, 0.01825096675712572, 0.0036501933514251437)
 PROFILE_GAINS = {
     "root_supported_v1": GAINS,
     "com_supported_v2": (300.0, 30.0, 3.0, 0.02),
+    "com_bounded_v3": (300.0, 30.0, 3.0, 0.02),
 }
 
 
@@ -50,7 +51,33 @@ def support_wrench(masses, body_com_pos_w, root_link_pos_w, gravity):
     return force, torque
 
 
-def guarded_native_pd(state, origins, target_pos, target_quat, gains=GAINS, profile="root_supported_v1"):
+def stable_vector_norm(value):
+    """Float64 max-scaled norm avoids squaring large finite components."""
+    wide = value.to(dtype=torch.float64)
+    scale = wide.abs().amax(dim=-1, keepdim=True)
+    scaled = wide / torch.where(scale > 0, scale, torch.ones_like(scale))
+    return scale.squeeze(-1) * torch.linalg.vector_norm(scaled, dim=-1)
+
+
+def bounded_pd_torque(requested):
+    """SIM-only radial PD saturation; not a total root-wrench limit."""
+    finite_tensor(requested, (requested.shape[0], 3), "requested PD torque")
+    requested_norm = stable_vector_norm(requested)
+    saturated = requested_norm > 1.0
+    wide = requested.to(dtype=torch.float64)
+    scale = wide.abs().amax(dim=-1, keepdim=True)
+    scaled = wide / torch.where(scale > 0, scale, torch.ones_like(scale))
+    length = torch.linalg.vector_norm(scaled, dim=-1, keepdim=True)
+    unit = scaled / torch.where(length > 0, length, torch.ones_like(length))
+    # Round saturated vectors inward so casting cannot exceed the 1 Nm bound.
+    bounded = (unit * (1.0 - torch.finfo(requested.dtype).eps)).to(dtype=requested.dtype)
+    applied = torch.where(saturated.unsqueeze(-1), bounded, requested)
+    return applied, {"requested": requested, "applied": applied,
+                     "requested_norm": requested_norm, "applied_norm": stable_vector_norm(applied),
+                     "saturated": saturated}
+
+
+def guarded_native_pd(state, origins, target_pos, target_quat, gains=GAINS, profile="root_supported_v1", diagnostics=None):
     """Native root_state_w LINK pose + root-body COM velocity damping, no FF."""
     n = state.shape[0]
     for value, shape, label in ((state, (n, 13), "root state"), (origins, (n, 3), "env origins"),
@@ -69,6 +96,13 @@ def guarded_native_pd(state, origins, target_pos, target_quat, gains=GAINS, prof
     torque = kp_rot * axis_angle_from_quat(error) - kd_rot * state[:, 10:13]
     finite_tensor(force, (n, 3), "PD force")
     finite_tensor(torque, (n, 3), "PD torque")
+    if profile == "com_bounded_v3":
+        if bool((torch.linalg.vector_norm(force, dim=-1) > 50.0).any()):
+            raise ValueError("PD exceeds 50 N in at least one environment; abort, no force clipping/reset")
+        torque, values = bounded_pd_torque(torque)
+        if diagnostics is not None:
+            diagnostics.update(values)
+        return force, torque
     bad = (torch.linalg.vector_norm(force, dim=-1) > 50.0) | (torch.linalg.vector_norm(torque, dim=-1) > 1.0)
     if bool(bad.any()):
         raise ValueError("PD exceeds 50 N / 1 Nm in at least one environment; abort, no clipping/reset")
@@ -171,6 +205,26 @@ class Hand2SupportedRootAction(SE3ImpedanceActionTerm):
         super().process_actions(actions)
         finite_tensor(self.target_pos, (self.num_envs, 3), "processed target")
         finite_tensor(self.target_quat, (self.num_envs, 4), "processed quaternion")
+        if self._root_controller_profile == "com_bounded_v3":
+            self._wrist_v3_stats = {key: self.target_pos.new_zeros((), dtype=torch.float64)
+                                    for key in ("requested_max", "applied_max", "saturated_count", "combined_max")}
+            self._wrist_v3_samples = 0
+
+    def _publish_wrist_v3_log(self):
+        stats = self._wrist_v3_stats
+        self._env.extras.setdefault("log", {}).update({
+            "WristV3/pd_requested_torque_max_nm": stats["requested_max"],
+            "WristV3/pd_applied_torque_max_nm": stats["applied_max"],
+            "WristV3/pd_torque_saturation_fraction": stats["saturated_count"] / self._wrist_v3_samples,
+            "WristV3/combined_root_torque_max_nm": stats["combined_max"],
+        })
+
+    def reset(self, env_ids=None):
+        super().reset(env_ids)
+        # IsaacLab replaces extras['log'] before action_manager.reset at episode
+        # end. Republish the completed control step, without resetting its stats.
+        if self._root_controller_profile == "com_bounded_v3" and getattr(self, "_wrist_v3_samples", 0):
+            self._publish_wrist_v3_log()
 
     def apply_actions(self):
         robot, n = self._asset, self.num_envs
@@ -180,14 +234,15 @@ class Hand2SupportedRootAction(SE3ImpedanceActionTerm):
         finite_tensor(joint_term.get_base_joint_pos(), (n, 20), "finger motion targets")
         guard_joints(robot.data.joint_pos, robot.data.joint_vel,
                      robot.data.joint_vel_target, robot.data.joint_effort_target, self._limits)
+        diagnostics = {} if self._root_controller_profile == "com_bounded_v3" else None
         pd = guarded_native_pd(robot.data.root_state_w, self._env.scene.env_origins,
                                self.target_pos, self.target_quat,
                                tuple(getattr(self, key) for key in ("kp_pos", "kd_pos", "kp_rot", "kd_rot")),
-                               profile=self._root_controller_profile)
+                               profile=self._root_controller_profile, diagnostics=diagnostics)
         point = robot.data.root_link_pos_w
         support = support_wrench(self._body_mass, robot.data.body_com_pos_w, point, self._gravity)
         force, torque = pd[0] + support[0], pd[1] + support[1]
-        if self._root_controller_profile == "com_supported_v2":
+        if self._root_controller_profile in ("com_supported_v2", "com_bounded_v3"):
             hand_com = (self._body_mass.unsqueeze(-1) * robot.data.body_com_pos_w).sum(dim=1) / self._body_mass.sum(dim=1, keepdim=True)
             finite_tensor(hand_com, (n, 3), "whole-hand COM")
             # Shift only the guarded PD force to the whole-hand COM; gravity
@@ -199,6 +254,15 @@ class Hand2SupportedRootAction(SE3ImpedanceActionTerm):
         robot.set_external_force_and_torque(forces=force.unsqueeze(1), torques=torque.unsqueeze(1),
                                             positions=point.unsqueeze(1), body_ids=self._wrench_body_ids,
                                             is_global=True)
+        if diagnostics is not None:
+            self._wrist_v3_last_pd = diagnostics
+            stats = self._wrist_v3_stats
+            stats["requested_max"] = torch.maximum(stats["requested_max"], diagnostics["requested_norm"].max())
+            stats["applied_max"] = torch.maximum(stats["applied_max"], diagnostics["applied_norm"].max())
+            stats["saturated_count"] = stats["saturated_count"] + diagnostics["saturated"].sum()
+            stats["combined_max"] = torch.maximum(stats["combined_max"], stable_vector_norm(torque).max())
+            self._wrist_v3_samples += n  # N envs x actual physics calls (normally decimation=4).
+            self._publish_wrist_v3_log()
 
 
 @configclass
